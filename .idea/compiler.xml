@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Anbessaw_Salguero_ORM" />
+        <module name="Anbessaw_Salguero_p1" />
       </profile>
     </annotationProcessing>
   </component>
