@@ -1,0 +1,27 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE salanb-configuration SYSTEM
+        "http://www.johnsalguero.com/dtd/salanb-configuration-0.1.dtd">
+<salanb-configuration>
+    <session-factory>
+
+        <property name = "salanb.connection.driver_class">
+            com.mysql.jdbc.Driver
+        </property>
+
+        <property name = "salanb.connection.url">
+            jdbc:mysql://localhost/test
+        </property>
+
+        <property name = "salanb.connection.username">
+            root
+        </property>
+
+        <property name = "salanb.connection.password">
+            root123
+        </property>
+
+        <!-- List of XML mapping files -->
+        <mapping resource = "Movie.salanb.xml"/>
+
+    </session-factory>
+</salanb-configuration>
