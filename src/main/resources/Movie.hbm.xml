@@ -1,0 +1,26 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name = "orm_playground.models.Movie" table = "movies">
+
+        <meta attribute = "class-description">
+            This class contains the movie detail.
+        </meta>
+
+        <id name = "m_id" type = "int" column = "m_id">
+            <generator class="identity"/>
+        </id>
+
+        <property name = "title" column = "title" type = "string"/>
+        <property name = "price" column = "price" type = "big_decimal"/>
+        <property name = "available" column = "available" type = "boolean"/>
+        <property name = "return_date" column = "return_date" type = "long"/>
+        <property name = "director_id" column = "director_id" type = "int"/>
+        <property name = "genre_id" column = "genre_id" type = "int"/>
+
+    </class>
+</hibernate-mapping>
