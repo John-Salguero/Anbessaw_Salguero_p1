@@ -1,0 +1,23 @@
+<!-- Salguero and Anbessaw file-based configuration document.
+
+This document defines how the application will be using the ORM.
+This has been written with the assistance of 
+https://xmlwriter.net/xml_guide/doctype_declaration.shtml
+And has been heavily inspired by
+http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd
+-->
+
+<!DOCTYPE salanb-configuration [
+
+<!ELEMENT salanb-configuration (session-factory+)>
+
+<!ELEMENT property (#PCDATA)>
+<!ATTLIST property name CDATA #REQUIRED>
+
+<!ELEMENT mapping EMPTY> <!-- reference to a mapping file -->
+<!ATTLIST mapping resource CDATA #IMPLIED>
+
+<!ELEMENT session-factory (property*, mapping*)>
+<!ATTLIST session-factory name CDATA #IMPLIED> 
+
+]>
