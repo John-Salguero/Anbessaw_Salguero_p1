@@ -1,10 +1,7 @@
 <?xml version = "1.0" encoding = "utf-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-        "-//Hibernate/Hibernate Mapping DTD//EN"
-        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-
-<hibernate-mapping>
-
+<!DOCTYPE salanb-mapping SYSTEM
+        "http://johnsalguero.com/dtd/salanb-mapping-0.1.dtd">
+<salanb-mapping>
     <class name = "orm_playground.models.Movie" table = "movies">
 
         <meta attribute = "class-description">
@@ -12,7 +9,7 @@
         </meta>
 
         <id name = "m_id" type = "int" column = "m_id">
-            <generator class="identity"/>
+            <generator class="natural"/>
         </id>
 
         <property name = "title" column = "title" type = "string"/>
@@ -23,4 +20,4 @@
         <property name = "genre_id" column = "genre_id" type = "int"/>
 
     </class>
-</hibernate-mapping>
+</salanb-mapping>

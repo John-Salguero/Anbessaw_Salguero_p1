@@ -7,8 +7,6 @@ And has been heavily inspired by
 http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd
 -->
 
-<!DOCTYPE salanb-configuration [
-
 <!ELEMENT salanb-configuration (session-factory+)>
 
 <!ELEMENT property (#PCDATA)>
@@ -19,5 +17,3 @@ http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd
 
 <!ELEMENT session-factory (property*, mapping*)>
 <!ATTLIST session-factory name CDATA #IMPLIED> 
-
-]>

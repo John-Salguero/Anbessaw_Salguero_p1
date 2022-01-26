@@ -1,0 +1,48 @@
+<!-- Salguero and Anbessaw file-based mapping document.
+
+This document defines how the application will map a class.
+This has been written with the assistance of
+https://xmlwriter.net/xml_guide/doctype_declaration.shtml
+And has been heavily inspired by
+http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd
+-->
+
+    <!ELEMENT salanb-mapping (class+, meta*)>
+
+    <!ELEMENT meta (#PCDATA)>
+    <!ATTLIST meta attribute CDATA #REQUIRED>
+
+    <!ELEMENT class (
+            meta*,
+            id+,
+            property*
+            )>
+    <!ATTLIST class name CDATA #REQUIRED>                           <!-- this is the class name -->
+    <!ATTLIST class table CDATA #IMPLIED>							<!-- default: unqualified classname -->
+
+
+    <!ELEMENT id (meta*,generator?)>
+    <!ATTLIST id name CDATA #REQUIRED>
+    <!ATTLIST id column CDATA #REQUIRED>
+    <!ATTLIST id type CDATA #REQUIRED>
+    <!ATTLIST id length CDATA #IMPLIED>
+    <!ATTLIST id precision CDATA #IMPLIED>
+
+
+    <!-- Property of an entity class or component, component-element, composite-id, etc.
+    JavaBeans style properties are mapped to table columns. -->
+
+    <!ELEMENT property (meta*)>
+    <!ATTLIST property name CDATA #REQUIRED>
+    <!ATTLIST property type CDATA #REQUIRED>
+    <!ATTLIST property column CDATA #REQUIRED>
+    <!ATTLIST property length CDATA #IMPLIED>
+    <!ATTLIST property precision CDATA #IMPLIED>
+    <!ATTLIST property not-null (true|false) #IMPLIED>
+    <!ATTLIST property unique (true|false) "false">
+
+    <!-- Generators generate unique identifiers. The class attribute specifies a Java
+    class implementing an id generation algorithm. -->
+
+    <!ELEMENT generator EMPTY>
+    <!ATTLIST generator class CDATA #REQUIRED>
