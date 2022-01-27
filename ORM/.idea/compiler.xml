@@ -11,8 +11,5 @@
         <module name="ORM" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ORM" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

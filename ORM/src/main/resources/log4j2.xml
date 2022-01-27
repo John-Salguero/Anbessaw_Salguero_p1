@@ -12,8 +12,8 @@
         </Console>
         <!-- File appender configuration -->
         <RollingFile name="RollingFile"
-                     fileName="${basePath}/app.log"
-                     filePattern="${basePath}/app-%d{yyyy-MM-dd}.log">
+                     fileName="${basePath}/salanb_orm.log"
+                     filePattern="${basePath}/salanb_orm-%d{yyyy-MM-dd}.log">
             <PatternLayout>
                 <pattern>[%p] %d{yyyy-MM-dd HH:mm:ss}: [%t] %l - %m%n
                 </pattern>
