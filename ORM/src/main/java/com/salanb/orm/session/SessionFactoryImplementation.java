@@ -16,6 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SessionFactoryImplementation implements SessionFactory {
 
@@ -50,8 +51,10 @@ public class SessionFactoryImplementation implements SessionFactory {
         tableMaps = new HashMap<>();
         tableTypeMaps = new HashMap<>();
         primaryKeys = new HashMap<>();
+        // used a concurrent map since  the cache to delete needs to be thread-safe
+        // the first layer of cached data does not, second layer does
         cachedData = new HashMap<>();
-        cacheToDelete = new HashMap<>();
+        cacheToDelete = new ConcurrentHashMap<>();
 
 
         // Instantiate the DocumentBuilderFactory Factory
@@ -94,7 +97,8 @@ public class SessionFactoryImplementation implements SessionFactory {
                     tableMaps.put(clazz, tableName);
                     tableTypeMaps.put(tableName, new HashMap<>());
                     primaryKeys.put(clazz, new LinkedList<>());
-                    cachedData.put(tableName, new HashMap<>());
+                    // the second layer of the cached data needs to be thread safe
+                    cachedData.put(tableName, new ConcurrentHashMap<>());
                     cacheToDelete.put(tableName, new HashSet<>());
 
 
@@ -245,7 +249,7 @@ public class SessionFactoryImplementation implements SessionFactory {
      * @param pojo - the object being stored
      * @return If successful returns the object being stored
      */
-    Object addToCachedData(Object pojo) {
+     Object addToCachedData(Object pojo) {
         String tableName = tableMaps.get(pojo.getClass());
         Identifier id = getId(pojo);
 
@@ -306,7 +310,7 @@ public class SessionFactoryImplementation implements SessionFactory {
      * @param id - the object's primary/composite key
      * @return The object that was successfully added to be deleted
      */
-    Object addCacheToDelete(String tableName, Identifier id) {
+    synchronized Object addCacheToDelete(String tableName, Identifier id) {
 
         Object ret = cacheToDelete.get(tableName).add(id);
         if(cachedData.get(tableName).containsKey(getId(ret)))

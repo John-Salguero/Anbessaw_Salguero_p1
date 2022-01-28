@@ -44,7 +44,7 @@ public class SessionImplementation implements Session{
      * @param key - the key of the data in the table
      */
     @Override
-    public void setDirtyFlag(String tableName, Identifier key) {
+   synchronized public void setDirtyFlag(String tableName, Identifier key) {
         if(!dirtyFlags.containsKey(tableName))
             dirtyFlags.put(tableName, new LinkedList<>());
         dirtyFlags.get(tableName).add(key);

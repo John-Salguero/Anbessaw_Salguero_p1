@@ -125,7 +125,7 @@ public class App {
         System.out.println(u);
 
         UserAccounts ua = new UserAccounts();
-        ua.setUsername(null);
+        ua.setUsername("null");
         ua.setAccountId("ae1d459bac7266fdc36001e6ff446bf563b7d4d861aeed75a642654e49eb2bae");
         ua = (UserAccounts) transaction.get(ua);
         System.out.println(ua);

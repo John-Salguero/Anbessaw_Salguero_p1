@@ -19,20 +19,75 @@ public class Transaction {
         this.parent = parent;
     }
 
-//    public Identifier save(Object pojo) {
-//
-//        return pojo;
-//    }
-//
-//    public Identifier update(Object pojo) {
-//
-//        return pojo;
-//    }
-//
-//    public Identifier delete(Object pojo){
-//
-//        return pojo;
-//    }
+    /**
+     * Given an object, updates the object in the cache
+     * if the object already exist return null
+     * as this is the wrong request to update a new entry
+     * @param pojo - the object to be updated
+     * @return - The identifier of that object
+     */
+    public Identifier save(Object pojo) {
+        Object oldPOJO = get(pojo);
+        if(oldPOJO != null)
+            return null;
+
+        SessionFactoryImplementation sf = (SessionFactoryImplementation) parent.getParent();
+        Object newPOJO = sf.addToCachedData(pojo);
+
+        Identifier id = sf.getId(newPOJO);
+        String tableName = sf.getTableMaps().get(newPOJO.getClass());
+
+        // add to the dirty flags that we deleted some info
+        parent.setDirtyFlag(tableName, id);
+
+        return id;
+    }
+
+    /**
+     * Given an object, updates the object in the cache
+     * if the object doesn't already exist return null
+     * as this is the wrong request to save a new entry
+     * @param pojo - the object to be updated
+     * @return - The identifier of that object
+     */
+    public Identifier update(Object pojo) {
+        Object oldPOJO = get(pojo);
+        if(oldPOJO == null)
+            return null;
+
+        SessionFactoryImplementation sf = (SessionFactoryImplementation) parent.getParent();
+        Object newPOJO = sf.addToCachedData(pojo);
+
+        Identifier id = sf.getId(newPOJO);
+        String tableName = sf.getTableMaps().get(newPOJO.getClass());
+
+        // add to the dirty flags that we deleted some info
+        parent.setDirtyFlag(tableName, id);
+
+        return id;
+    }
+
+    /**
+     * Given an object, mark it for deletion in the cached objects
+     * @param pojo - The object to be Deleted
+     * @return -
+     */
+    public Identifier delete(Object pojo){
+
+        SessionFactoryImplementation sf = (SessionFactoryImplementation) parent.getParent();
+
+        Identifier id = sf.getId(pojo);
+        String tableName = sf.getTableMaps().get(pojo.getClass());
+        if(sf.hasCachedToDelete(tableName, id))
+            return id;
+        sf.removeFromCachedData(tableName, id);
+        sf.addCacheToDelete(tableName, id);
+
+        // add to the dirty flags that we deleted some info
+        parent.setDirtyFlag(tableName, id);
+
+        return id;
+    }
 
     /**
      * Given a Class and an Identifier (Primary/Composite key) get the object
