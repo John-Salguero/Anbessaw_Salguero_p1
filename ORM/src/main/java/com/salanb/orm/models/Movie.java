@@ -11,6 +11,7 @@ public class Movie {
     private BigDecimal price;
     private boolean available;
     private long returnDate;
+    private Integer directorId;
 
     // Default Constructor
     public Movie() {
@@ -73,14 +74,23 @@ public class Movie {
         this.returnDate = returnDate;
     }
 
+    public int getDirectorId() {
+        return directorId;
+    }
+
+    public void setDirectorId(int directorId) {
+        this.directorId = directorId;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", price=" + NumberFormat.getCurrencyInstance().format(price) +
+                ", price=" + price +
                 ", available=" + available +
                 ", returnDate=" + returnDate +
+                ", directorId=" + directorId +
                 '}';
     }
 }

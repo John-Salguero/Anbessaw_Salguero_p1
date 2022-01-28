@@ -166,53 +166,117 @@ public class Transaction {
                 String name = fieldToNamesMap.get(field.getName());
                 switch (type){
                     case "int":
+                        rs.getInt(name);
+                        if(rs.wasNull())
+                        {
+                            String msg = "Cannot Assign a null value to a primitive Type";
+                            MyLogger.logger.fatal(msg);
+                            throw new IllegalArgumentException(msg);
+                        }
                     case "java.lang.Integer":{
+                        rs.getInt(name);
                         field.setAccessible(true);
-                        Integer val = rs.getInt(name);
-                        if(val != null)
+                        if(rs.wasNull())
+                            field.set(retVal, null);
+                        else {
+                            Integer val = rs.getInt(name);
                             field.set(retVal, val);
+                        }
                         break;}
                     case "long":
+                        rs.getLong(name);
+                        if(rs.wasNull())
+                        {
+                            String msg = "Cannot Assign a null value to a primitive Type";
+                            MyLogger.logger.fatal(msg);
+                            throw new IllegalArgumentException(msg);
+                        }
                     case "java.lang.Long":{
+                        rs.getLong(name);
                         field.setAccessible(true);
-                        Long val = rs.getLong(name);
-                        if(val != null)
+                        if(rs.wasNull())
+                            field.set(retVal, null);
+                        else {
+                            Long val = rs.getLong(name);
                             field.set(retVal, val);
+                        }
                         break;}
                     case "short":
+                        rs.getShort(name);
+                        if(rs.wasNull())
+                        {
+                            String msg = "Cannot Assign a null value to a primitive Type";
+                            MyLogger.logger.fatal(msg);
+                            throw new IllegalArgumentException(msg);
+                        }
                     case "java.lang.Short":{
+                        rs.getShort(name);
                         field.setAccessible(true);
-                        Short val = rs.getShort(name);
-                        if(val != null)
+                        if(rs.wasNull())
+                            field.set(retVal, null);
+                        else {
+                            Short val = rs.getShort(name);
                             field.set(retVal, val);
+                        }
                         break;}
                     case "java.math.BigDecimal":{
+                        rs.getBigDecimal(name);
                         field.setAccessible(true);
-                        BigDecimal val = rs.getBigDecimal(name);
-                        if(val != null)
+                        if(rs.wasNull())
+                            field.set(retVal, null);
+                        else {
+                            BigDecimal val = rs.getBigDecimal(name);
                             field.set(retVal, val);
+                        }
                         break;}
                     case "char":
+                        rs.getNString(name);
+                        if(rs.wasNull())
+                        {
+                            String msg = "Cannot Assign a null value to a primitive Type";
+                            MyLogger.logger.fatal(msg);
+                            throw new IllegalArgumentException(msg);
+                        }
                     case "java.lang.Character":{
+                        rs.getNString(name);
                         field.setAccessible(true);
-                        String val = rs.getNString(name);
-                        if(val != null)
+                        if(rs.wasNull())
+                            field.set(retVal, null);
+                        else {
+                            String val = rs.getNString(name);
                             field.set(retVal, val.charAt(0));
+                        }
                         break;}
                     case "java.lang.String":{
+                        rs.getString(name);
                         field.setAccessible(true);
-                        String val = rs.getString(name);
-                        if(val != null)
+                        if(rs.wasNull())
+                            field.set(retVal, null);
+                        else {
+                            String val = rs.getString(name);
                             field.set(retVal, val);
+                        }
                         break;}
                     case "boolean":
+                        rs.getBoolean(name);
+                        if(rs.wasNull())
+                        {
+                            String msg = "Cannot Assign a null value to a primitive Type";
+                            MyLogger.logger.fatal(msg);
+                            throw new IllegalArgumentException(msg);
+                        }
                     case "java.lang.Boolean":{
+                        rs.getBoolean(name);
                         field.setAccessible(true);
-                        Boolean val = rs.getBoolean(name);
-                        if(val != null)
+                        if(rs.wasNull())
+                            field.set(retVal, null);
+                        else {
+                            Boolean val = rs.getBoolean(name);
                             field.set(retVal, val);
+                        }
                         break;}
-
+                    default:
+                        throw new SQLException();
                 }
 
             }
@@ -220,8 +284,8 @@ public class Transaction {
             String msg = "A field could not be accessed by reflection";
             MyLogger.logger.fatal(msg);
             throw new RuntimeException(msg, e);
-        }catch (SQLException e) {
-            String msg = "Could not extract info from the Return Set Properly, Make sure you mapped out the POJO fully";
+        }catch (SQLException | NullPointerException e) {
+            String msg = "Could not extract info from the Result Set Properly, Make sure you mapped out the POJO Correctly";
             MyLogger.logger.fatal(msg);
             throw new RuntimeException(msg, e);
         }
