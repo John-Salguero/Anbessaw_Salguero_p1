@@ -1,4 +1,6 @@
 package com.salanb.orm.session;
 
-public class Session {
+public interface Session {
+
+    public void close();
 }

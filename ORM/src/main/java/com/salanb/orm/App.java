@@ -2,10 +2,13 @@ package com.salanb.orm;
 
 import com.salanb.orm.configuration.Configuration;
 import com.salanb.orm.configuration.ConfigurationFactory;
+import com.salanb.orm.configuration.ConfigurationFactoryImplementation;
 import com.salanb.orm.logging.MyLogger;
 import com.salanb.orm.session.Session;
 import com.salanb.orm.session.SessionFactory;
+import com.salanb.orm.session.SessionFactoryImplementation;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,11 +40,11 @@ public class App {
     // Static block that executes when the app is loaded into memory
     static {
         FILENAME = "SalAnb.cfg.xml";
-        factory = ConfigurationFactory.getInstance();
+        factory = ConfigurationFactoryImplementation.getInstance();
         configs = factory.getConfigurations(FILENAME);
         sessionFactories = new HashMap<>();
         for(Map.Entry<String, Configuration> config : configs.entrySet()) {
-            sessionFactories.put(config.getKey(), new SessionFactory(config.getValue()));
+            sessionFactories.put(config.getKey(), new SessionFactoryImplementation(config.getValue()));
         }
     }
 
@@ -49,10 +52,11 @@ public class App {
      * Returns a new session to be used to communicate with the database
      * @return - A Session object that can be used for transactions
      */
-    public Session getNewSession(){
+    public Session getNewSession() throws ParserConfigurationException {
         if(sessionFactories.isEmpty()) {
             MyLogger.logger.error("Trying to get a session from an unconfigured factory");
-            throw new RuntimeException("Trying to get a session from an unconfigured factory");
+            throw new ParserConfigurationException(
+                    "Trying to get a session from an unconfigured factory");
         }
 
         if(sessionFactories.containsKey(""))
@@ -65,10 +69,10 @@ public class App {
      * @param name - the name of the session factory if one is not provided it defaults to the nameless one
      * @return - A Session object that can be used for transactions
      */
-    public Session getNewSession(String name){
+    public Session getNewSession(String name) throws ParserConfigurationException {
         if(!sessionFactories.containsKey("")){
             MyLogger.logger.error("Trying to get a session from an unconfigured factory");
-            throw new RuntimeException("Trying to get a session from an unconfigured factory");
+            throw new ParserConfigurationException("Trying to get a session from an unconfigured factory");
         }
 
         return sessionFactories.get(name).getSession();
@@ -83,7 +87,11 @@ public class App {
      */
     public static void main(String[] args) {
         App thisInstance = App.getInstance();
-        Session session = thisInstance.getNewSession();
+        try {
+            Session session = thisInstance.getNewSession();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
 
 
     }
