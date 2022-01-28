@@ -1,5 +1,6 @@
 package com.salanb.orm.configuration;
 
+import com.salanb.orm.App;
 import com.salanb.orm.logging.MyLogger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -53,7 +54,7 @@ public class ConfigurationFactoryImplementation implements ConfigurationFactory 
             // parse XML file
             DocumentBuilder db = dbf.newDocumentBuilder();
 
-            Document doc = db.parse(getFileFromResource(filename));
+            Document doc = db.parse(App.getFileFromResource(filename));
 
             // optional, but recommended
             // http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
@@ -113,6 +114,7 @@ public class ConfigurationFactoryImplementation implements ConfigurationFactory 
                 Configuration newConfiguration =
                         new Configuration(driver, url, username, password, mapResources);
                 retVal.put(name, newConfiguration);
+                MyLogger.logger.info("Successfully configured " + name);
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             MyLogger.logger.error("The configuration could not be loaded!");
@@ -120,29 +122,6 @@ public class ConfigurationFactoryImplementation implements ConfigurationFactory 
         }
 
         return retVal;
-    }
-
-    /**
-     * Given a filename, retrieves a file using the class loader
-     * @param fileName - The name of the file the class loader is to load
-     * @return - The file that gets loaded in
-     */
-    private static  File getFileFromResource(String fileName) {
-        ClassLoader classLoader = ConfigurationFactoryImplementation.class.getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
-            MyLogger.logger.error("file not found! " + fileName);
-            throw new IllegalArgumentException("file not found! " + fileName);
-        } else {
-            try {
-                return new File(resource.toURI());
-            } catch (URISyntaxException e) {
-                MyLogger.logger.error("Syntax Error while retrieving configuration file path");
-                throw new RuntimeException(
-                        "Syntax Error while retrieving configuration file path", e);
-            }
-        }
-
     }
 
 }

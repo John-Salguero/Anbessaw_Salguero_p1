@@ -1,6 +1,6 @@
 package com.salanb.orm.utillities;
 
-import java.util.LinkedList;
+import java.util.List;
 
-public class Identifier extends LinkedList<Object> implements IdentifierInterface {
+public interface Identifier extends List<Object> {
 }

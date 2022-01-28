@@ -2,22 +2,22 @@
 <!DOCTYPE salanb-mapping SYSTEM
         "http://johnsalguero.com/dtd/salanb-mapping-0.1.dtd">
 <salanb-mapping>
-    <class name = "orm_playground.models.Movie" table = "movies">
+    <class name = "com.salanb.orm.models.Movie" table = "movies">
 
         <meta attribute = "class-description">
             This class contains the movie detail.
         </meta>
 
-        <id name = "m_id" type = "int" column = "m_id">
+        <id name = "id" type = "int" column = "m_id">
             <generator class="natural"/>
         </id>
 
         <property name = "title" column = "title" type = "string"/>
         <property name = "price" column = "price" type = "big_decimal"/>
         <property name = "available" column = "available" type = "boolean"/>
-        <property name = "return_date" column = "return_date" type = "long"/>
-        <property name = "director_id" column = "director_id" type = "int"/>
-        <property name = "genre_id" column = "genre_id" type = "int"/>
+        <property name = "returnDate" column = "return_date" type = "long"/>
+        <property name = "director_id" column = "director_id" type = "integer"/>
+        <property name = "genre_id" column = "genre_id" type = "integer"/>
 
     </class>
 </salanb-mapping>

@@ -12,5 +12,5 @@ public interface ConfigurationFactory {
      * @param filename The file to parse
      * @return - a map of names to configurations to be used to init SessionFactories
      */
-    public Map<String, Configuration> getConfigurations(String filename);
+    Map<String, Configuration> getConfigurations(String filename);
 }

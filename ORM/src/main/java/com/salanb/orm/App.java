@@ -4,11 +4,18 @@ import com.salanb.orm.configuration.Configuration;
 import com.salanb.orm.configuration.ConfigurationFactory;
 import com.salanb.orm.configuration.ConfigurationFactoryImplementation;
 import com.salanb.orm.logging.MyLogger;
+import com.salanb.orm.models.Movie;
 import com.salanb.orm.session.Session;
 import com.salanb.orm.session.SessionFactory;
 import com.salanb.orm.session.SessionFactoryImplementation;
+import com.salanb.orm.session.Transaction;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.math.BigDecimal;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +43,8 @@ public class App {
     static private final ConfigurationFactory factory;
     static private  final Map<String, Configuration> configs;
     static private Map<String, SessionFactory> sessionFactories;
+    public static final Map<String, Class> typeMaps;
+
 
     // Static block that executes when the app is loaded into memory
     static {
@@ -46,6 +55,15 @@ public class App {
         for(Map.Entry<String, Configuration> config : configs.entrySet()) {
             sessionFactories.put(config.getKey(), new SessionFactoryImplementation(config.getValue()));
         }
+
+        typeMaps = new HashMap<>();
+        typeMaps.put("integer", Integer.class);
+        typeMaps.put("long", Long.class);
+        typeMaps.put("short", Short.class);
+        typeMaps.put("big_decimal", BigDecimal.class);
+        typeMaps.put("character", Character.class);
+        typeMaps.put("string", String.class);
+        typeMaps.put("boolean", Bool.class);
     }
 
     /**
@@ -87,12 +105,40 @@ public class App {
      */
     public static void main(String[] args) {
         App thisInstance = App.getInstance();
+        Session session = null;
         try {
-            Session session = thisInstance.getNewSession();
+            session = thisInstance.getNewSession();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
+        Transaction transaction = session.getTransaction();
+        Movie m = new Movie();
+        m.setId(32);
+        m = (Movie)transaction.get(m);
+        System.out.println(m);
 
+    }
+
+    /**
+     * Given a filename, retrieves a file using the class loader
+     * @param fileName - The name of the file the class loader is to load
+     * @return - The file that gets loaded in
+     */
+    public static File getFileFromResource(String fileName) {
+        ClassLoader classLoader = ConfigurationFactoryImplementation.class.getClassLoader();
+        URL resource = classLoader.getResource(fileName);
+        if (resource == null) {
+            MyLogger.logger.error("file not found! " + fileName);
+            throw new IllegalArgumentException("file not found! " + fileName);
+        } else {
+            try {
+                return new File(resource.toURI());
+            } catch (URISyntaxException e) {
+                MyLogger.logger.error("Syntax Error while retrieving configuration file path");
+                throw new RuntimeException(
+                        "Syntax Error while retrieving configuration file path", e);
+            }
+        }
 
     }
 }
