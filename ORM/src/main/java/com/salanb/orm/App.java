@@ -5,6 +5,8 @@ import com.salanb.orm.configuration.ConfigurationFactory;
 import com.salanb.orm.configuration.ConfigurationFactoryImplementation;
 import com.salanb.orm.logging.MyLogger;
 import com.salanb.orm.models.Movie;
+import com.salanb.orm.models.UserAccounts;
+import com.salanb.orm.models.UserContent;
 import com.salanb.orm.session.Session;
 import com.salanb.orm.session.SessionFactory;
 import com.salanb.orm.session.SessionFactoryImplementation;
@@ -116,6 +118,19 @@ public class App {
         m.setId(32);
         m = (Movie)transaction.get(m);
         System.out.println(m);
+
+        UserContent u = new UserContent();
+        u.setUsername("humongous.situation3362");
+        u = (UserContent) transaction.get(u);
+        System.out.println(u);
+
+        UserAccounts ua = new UserAccounts();
+        ua.setUsername(null);
+        ua.setAccountId("ae1d459bac7266fdc36001e6ff446bf563b7d4d861aeed75a642654e49eb2bae");
+        ua = (UserAccounts) transaction.get(ua);
+        System.out.println(ua);
+        ua = (UserAccounts) transaction.get(ua);
+        System.out.println(ua);
 
     }
 

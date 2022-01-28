@@ -211,7 +211,8 @@ public class SessionFactoryImplementation implements SessionFactory {
             for(String field : fieldList){
                 Field accessField = clazz.getDeclaredField(field);
                 accessField.setAccessible(true);
-                retVal.add(accessField.get(pojo));
+                if(!retVal.add(accessField.get(pojo)))
+                    return null;
             }
         } catch (NoSuchFieldException e) {
             String msg = "Class was incorrectly mapped, no such field";

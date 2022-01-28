@@ -33,11 +33,26 @@ public class Transaction {
 //
 //        return pojo;
 //    }
-//
-//    public Object get(Class clazz, Identifier id){
-//
-//        return pojo;
-//    }
+
+    /**
+     * Given a Class and an Identifier (Primary/Composite key) get the object
+     * @param clazz - The class of the object
+     * @param id - the primary/composite key of the object
+     * @return The object populated with information from the database
+     */
+    public Object get(Class clazz, Identifier id){
+
+        SessionFactoryImplementation sf =
+                (SessionFactoryImplementation) parent.getParent();
+
+        String tableName = sf.getTableMaps().get(clazz);
+
+        Object retVal = sf.getFromCachedData(tableName, id);
+        if(retVal != null)
+            return retVal;
+
+        return getObjectFromRepo(tableName, clazz, id, sf.getPrimaryKeys().get(clazz), sf.getFieldMaps().get(clazz));
+    }
 
     /**
      * Given an object with a well formed ID, retreive it from
@@ -46,6 +61,12 @@ public class Transaction {
      * @return
      */
     public Object get(Object pojo){
+
+        if(pojo == null) {
+            MyLogger.logger.error("Object is null");
+            return null;
+        }
+
         SessionFactoryImplementation sf =
                 (SessionFactoryImplementation) parent.getParent();
         Identifier id = sf.getId(pojo);
@@ -62,30 +83,35 @@ public class Transaction {
     private Object getObjectFromRepo(String tableName, Class clazz, Identifier id,
                                      List<String> primaryKey, Map<String, String> fieldToNamesMap){
         StringBuilder query = new StringBuilder();
-        query.append("SELECT ");
+        query.append("SELECT \"");
+
+        if(id == null) {
+            MyLogger.logger.error("id for object is null");
+            return null;
+        }
 
         // add the names
         Field[] fields= clazz.getDeclaredFields();
         for(int i = 0; i < fields.length; ){
             String name = fieldToNamesMap.get(fields[i++].getName());
             if(name != null)
-                query.append(name);
+                query.append(name).append("\"");
             else if(i == fields.length)
-                query.setLength(query.length() - 2);
+                query.setLength(query.length() - 3);
             if(i < fields.length)
-                query.append(", ");
+                query.append(", \"");
         }
 
         // add the From Clause
-        query.append(" FROM ").append(tableName);
+        query.append(" FROM \"").append(tableName);
 
         // add the Where Clause
-        query.append(" WHERE ");
+        query.append("\" WHERE \"");
         Iterator<String> it = primaryKey.iterator();
-        query.append(fieldToNamesMap.get(it.next())).append("=?");
+        query.append(fieldToNamesMap.get(it.next())).append("\"=?");
         while(it.hasNext()){
-            query.append(" AND ").
-                    append(fieldToNamesMap.get(it.next())).append("=?");
+            query.append(" AND \"").
+                    append(fieldToNamesMap.get(it.next())).append("\"=?");
         }
 
         // Prepare the Statement
@@ -132,6 +158,7 @@ public class Transaction {
 
         }catch (SQLException e) {
             String msg = "Could not retrieve object from Database" + clazz + " " + id;
+            msg += "\n" + e.getMessage();
             MyLogger.logger.error(msg);
             return null;
         }

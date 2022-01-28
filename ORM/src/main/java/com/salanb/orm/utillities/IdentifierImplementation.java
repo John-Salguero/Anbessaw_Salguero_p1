@@ -28,13 +28,36 @@ public class IdentifierImplementation extends LinkedList<Object> implements Iden
             Iterator<Object> rhsIT = rhs.iterator();
             while(thisIT.hasNext())
             {
-                if(!thisIT.next().equals(rhsIT.next()))
+                Object lhsObject = thisIT.next();
+                Object rhsObject = rhsIT.next();
+                if(lhsObject == null || rhsObject == null) {
+                    String msg = "A Primary Key is not permitted to be null";
+                    MyLogger.logger.fatal(msg);
+                    throw new RuntimeException(msg);
+                }
+                if(!lhsObject.equals(rhsObject))
                     return false;
             }
         }
 
         // All elements are identical
         return true;
+    }
+
+    /**
+     * Overrides the add method to prevent null primary keys
+     * @param obj - The object representing a primary key
+     * @return true if it was added properly
+     */
+    @Override
+    public boolean add(Object obj){
+        if(obj == null) {
+            String msg = "A Primary Key is not permitted to be null";
+            MyLogger.logger.error(msg);
+            return false;
+        }
+
+        return super.add(obj);
     }
 
     /**
@@ -47,6 +70,11 @@ public class IdentifierImplementation extends LinkedList<Object> implements Iden
         StringBuilder Message = new StringBuilder();
 
         for(Object elem : this) {
+            if(elem == null) {
+                String msg = "A Primary Key is not permitted to be null";
+                MyLogger.logger.fatal(msg);
+                throw new RuntimeException(msg);
+            }
             Class clazz = elem.getClass();
             if (clazz == Integer.class) {
                 Message.append((Integer)elem);
