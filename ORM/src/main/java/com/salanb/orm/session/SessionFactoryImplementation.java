@@ -5,6 +5,7 @@ import com.salanb.orm.configuration.Configuration;
 import com.salanb.orm.logging.MyLogger;
 import com.salanb.orm.utillities.Identifier;
 import com.salanb.orm.utillities.IdentifierImplementation;
+import javafx.util.Pair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -21,12 +22,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SessionFactoryImplementation implements SessionFactory {
 
     // All the maps used for relational mapping
-    private final Map<Class, Map<String, String>> fieldMaps;
-    private final Map<Class, String> tableMaps;
+    private final Map<Class<?>, Map<String, String>> fieldMaps;
+    private final Map<Class<?>, String> tableMaps;
     private final Map<String, Map<String, String>> tableTypeMaps;
-    private final Map<Class, List<String>> primaryKeys;
+    private final Map<Class<?>, List<String>> primaryKeys;
+    private final Map<Class<?>, List<GeneratorType>> generationType;
     private final Map<String, Map<Identifier, Object>> cachedData;
-    private final Map<String, Set<Identifier>> cacheToDelete;
+    private final Map<String, Set<Pair<Class<?>, Identifier>>> cacheToDelete;
+    private final Map<String, Set<Identifier>> cacheToSave;
 
     // information used for connecting to the database
     private final String driver;
@@ -51,10 +54,12 @@ public class SessionFactoryImplementation implements SessionFactory {
         tableMaps = new HashMap<>();
         tableTypeMaps = new HashMap<>();
         primaryKeys = new HashMap<>();
+        generationType = new HashMap<>();
         // used a concurrent map since  the cache to delete needs to be thread-safe
         // the first layer of cached data does not, second layer does
         cachedData = new HashMap<>();
         cacheToDelete = new ConcurrentHashMap<>();
+        cacheToSave = new ConcurrentHashMap<>();
 
 
         // Instantiate the DocumentBuilderFactory Factory
@@ -97,9 +102,11 @@ public class SessionFactoryImplementation implements SessionFactory {
                     tableMaps.put(clazz, tableName);
                     tableTypeMaps.put(tableName, new HashMap<>());
                     primaryKeys.put(clazz, new LinkedList<>());
+                    generationType.put(clazz, new LinkedList<>());
                     // the second layer of the cached data needs to be thread safe
                     cachedData.put(tableName, new ConcurrentHashMap<>());
                     cacheToDelete.put(tableName, new HashSet<>());
+                    cacheToSave.put(tableName, new HashSet<>());
 
 
 
@@ -118,6 +125,24 @@ public class SessionFactoryImplementation implements SessionFactory {
                         tableTypeMaps.get(tableName).put(columnName, type);
                         fieldMaps.get(clazz).put(fieldName, columnName);
                         primaryKeys.get(clazz).add(fieldName);
+
+                        NodeList generators = id.getElementsByTagName("generator");
+                        Element generator = null;
+                        if(generators.getLength() > 1) {
+                            String msg = "More than one generator specified for id.";
+                            MyLogger.logger.error(msg);
+                            throw new ParserConfigurationException(msg);
+                        }else if(generators.getLength() == 0)
+                            generationType.get(clazz).add(GeneratorType.FRAMEWORK);
+                        else {
+                            String genType = ((Element)generators.item(0)).getAttribute("class");
+                            try {generationType.get(clazz).add(GeneratorType.valueOf(genType));}
+                            catch (IllegalArgumentException e) {
+                                String msg = "Improper use of generation type";
+                                MyLogger.logger.error(msg);
+                                throw new ParserConfigurationException(msg);
+                            }
+                        }
                     }
 
                     // iterate through the properties and populate the mapping data
@@ -169,7 +194,7 @@ public class SessionFactoryImplementation implements SessionFactory {
      * key to the names of columns on the table
      */
     @Override
-    public Map<Class, Map<String, String>> getFieldMaps() {
+    public Map<Class<?>, Map<String, String>> getFieldMaps() {
         return fieldMaps;
     }
 
@@ -178,7 +203,7 @@ public class SessionFactoryImplementation implements SessionFactory {
      * @return a map where the class keys for the table names
      */
     @Override
-    public Map<Class, String> getTableMaps() {
+    public Map<Class<?>, String> getTableMaps() {
         return tableMaps;
     }
 
@@ -196,8 +221,16 @@ public class SessionFactoryImplementation implements SessionFactory {
      * @return a map where the class keys for a list of fields used as a primary/composite key
      */
     @Override
-    public Map<Class, List<String>> getPrimaryKeys() {
+    public Map<Class<?>, List<String>> getPrimaryKeys() {
         return primaryKeys;
+    }
+
+    /**
+     * Returns a map that maps the class to a list of generator types for its primary keys
+     * @return - a map that lists the generator types for a class
+     */
+    public Map<Class<?>, List<GeneratorType>> getGenerationType() {
+        return generationType;
     }
 
     /**
@@ -278,30 +311,17 @@ public class SessionFactoryImplementation implements SessionFactory {
     }
 
     /**
-     * returns the entire list set to be deleted
-     * @return a map where the tableName keys for a list of id's set to be deleted from the cache
-     */
-    Map<String, Set<Identifier>> getCacheToDelete() {
-        return cacheToDelete;
-    }
-
-    /**
-     * given the tableName, gets all the ids to be deleted from the cache
-     * @param tableName - the name of the table to get the objects to be deleted
-     * @return - the list of id's (primary or composite) of objects to be deleted
-     */
-    Set<Identifier> getCacheToDelete(String tableName) {
-        return cacheToDelete.get(tableName);
-    }
-
-    /**
-     * given a tablename and id, returns true if the row is set to be deleted
-     * @param tableName - the tableName of the object
-     * @param id - the id of the object
+     * given an object, determine if it is cached to be deleted
+     * @param pojo - the object to check
      * @return true if the object is set to be deleted
      */
-    boolean hasCachedToDelete(String tableName, Identifier id) {
-        return cacheToDelete.containsKey(id);
+    boolean hasCachedToDelete(Object pojo) {
+
+        Class<?> clazz = pojo.getClass();
+        String tableName = tableMaps.get(clazz);
+        Identifier id = getId(pojo);
+        return cacheToDelete.get(tableName).
+                contains(new Pair<Class<?>, Identifier>(clazz, id));
     }
 
     /**
@@ -310,13 +330,129 @@ public class SessionFactoryImplementation implements SessionFactory {
      * @param id - the object's primary/composite key
      * @return The object that was successfully added to be deleted
      */
-    synchronized Object addCacheToDelete(String tableName, Identifier id) {
+    synchronized Object addCachedToDelete(String tableName, Identifier id) {
 
-        Object ret = cacheToDelete.get(tableName).add(id);
-        if(cachedData.get(tableName).containsKey(getId(ret)))
-            return ret;
-        else
+        Object pojo = cachedData.get(tableName).get(id);
+        if(pojo == null)
             return null;
+        removeFromCachedData(tableName, id);
+        cacheToDelete.get(tableName).add(new Pair<>(pojo.getClass(), id));
+
+        return pojo;
     }
 
+    /**
+     * given a tableName and an id, sets that object to be saved
+     * @param tableName - the table name where the object belongs
+     * @param id - the object's primary/composite key
+     * @return The object that was successfully added to be saved
+     */
+    synchronized Object addCachedToSave(String tableName, Identifier id) {
+
+        Object pojo = cachedData.get(tableName).get(id);
+        if(pojo == null)
+            return null;
+        cacheToSave.get(tableName).add(id);
+
+        return pojo;
+    }
+
+    /**
+     * given an object, sets that object to be deleted
+     * @param pojo - Object to be deleted
+     * @return The object that was successfully added to be deleted
+     */
+    synchronized Object addCachedToDelete(Object pojo) {
+
+        String tableName = tableMaps.get(pojo.getClass());
+        Identifier id = getId(pojo);
+
+        return  addCachedToDelete(tableName, id);
+    }
+
+    /**
+     * given an object, sets that object to be saved
+     * @param pojo - Object to be saved
+     * @return The object that was successfully added to be saved
+     */
+    synchronized Object addCachedToSave(Object pojo) {
+
+        String tableName = tableMaps.get(pojo.getClass());
+        Identifier id = getId(pojo);
+
+        return  addCachedToSave(tableName, id);
+    }
+
+    /**
+     * given a tableName and an id, removes that object to be deleted
+     * @param tableName - the table name where the object belongs
+     * @param id - the object's primary/composite key
+     * @return True if the object was successfully removed
+     */
+    synchronized boolean removeCacheToDelete(String tableName, Identifier id) {
+
+        return cacheToDelete.get(tableName).remove(id);
+    }
+
+    /**
+     * given an object, remove it from the cache to be deleted
+     * @param pojo - The object to remove from the cache
+     * @return True if the object was successfully removed
+     */
+    synchronized boolean removeCacheToDelete(Object pojo) {
+
+        Class<?> clazz = pojo.getClass();
+        String tableName = tableMaps.get(clazz);
+        Identifier id = getId(pojo);
+        return cacheToDelete.get(tableName).
+                remove(new Pair<Class<?>, Identifier>(clazz, id));
+    }
+
+    /**
+     * given a tableName and an id, removes that object to be saved
+     * @param tableName - the table name where the object belongs
+     * @param id - the object's primary/composite key
+     * @return True if the object was successfully removed
+     */
+    synchronized boolean removeCacheToSave(String tableName, Identifier id) {
+
+        return cacheToSave.get(tableName).remove(id);
+    }
+
+    /**
+     * given an object check if it is cached to be saved
+     * @param pojo - The object to check if it is in the cache to save
+     * @return True if the object was successfully removed
+     */
+    synchronized boolean hasCacheToSave(Object pojo) {
+
+        String tableName = tableMaps.get(pojo.getClass());
+        Identifier id = getId(pojo);
+
+        return cacheToSave.get(tableName).contains(id);
+    }
+
+    /**
+     * Retrieve the data cached
+     * @return The cached repo
+     */
+    public Map<String, Map<Identifier, Object>> getCachedData() {
+        return cachedData;
+    }
+
+    /**
+     * Retrieve the data cached to delete
+     * @return The data needed to be deleted
+     */
+    public Map<String, Set<Pair<Class<?>, Identifier>>> getCacheToDelete() {
+        return cacheToDelete;
+    }
+
+    /**
+     * Retrieve the data to save
+     * @return the data yet to be saved
+     */
+    public Map<String, Set<Identifier>> getCacheToSave() {
+        return cacheToSave;
+    }
 }

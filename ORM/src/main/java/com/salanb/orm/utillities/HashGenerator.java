@@ -44,7 +44,7 @@ public class HashGenerator {
     /**
      * The method that securely Hashes information and returns an int
      * @param msg - The string that will be hashed
-     * @return A String holding the Hash of the message passed in
+     * @return An int holding the Hash of the message passed in
      */
     public int getMessageDigestInt(String msg){
 
@@ -54,14 +54,72 @@ public class HashGenerator {
     }
 
     /**
+     * The method that securely Hashes information and returns a long
+     * @param msg - The string that will be hashed
+     * @return A Long holding the Hash of the message passed in
+     */
+    public long getMessageDigestLong(String msg){
+
+        // Hash the message to securely save and compare
+        byte[] hash = SHA256Alg.digest(msg.getBytes(StandardCharsets.UTF_8));
+        return bytesToLong(hash);
+    }
+
+    /**
+     * The method that securely Hashes information and returns a short
+     * @param msg - The string that will be hashed
+     * @return A short holding the Hash of the message passed in
+     */
+    public short getMessageDigestShort(String msg){
+
+        // Hash the message to securely save and compare
+        byte[] hash = SHA256Alg.digest(msg.getBytes(StandardCharsets.UTF_8));
+        return bytesToShort(hash);
+    }
+
+    /**
      * Transforms the given byte array into a number in int form
      * @param bytes the byte array to transform
-     * @return a hexadecimal representation of the array in string format
+     * @return a int representation of the array
      */
     private int bytesToInt(byte[] bytes) {
         int retVal = 0;
         // convert each byte into a hexadecimal value and convert that into ascii format
         for (int j = 0; j < 4; j++) {
+            int curByte = bytes[j];
+            // bit-shift the byte by 8 to the proper location
+            retVal |= (curByte << (8 * j)) & (0xFF  << (8 * j));
+        }
+
+        return retVal;
+    }
+
+    /**
+     * Transforms the given byte array into a number in long form
+     * @param bytes the byte array to transform
+     * @return a Long representation of the array
+     */
+    private long bytesToLong(byte[] bytes) {
+        long retVal = 0;
+        // convert each byte into a hexadecimal value and convert that into ascii format
+        for (int j = 0; j < 8; j++) {
+            int curByte = bytes[j];
+            // bit-shift the byte by 8 to the proper location
+            retVal |= (curByte << (8 * j)) & (0xFF  << (8 * j));
+        }
+
+        return retVal;
+    }
+
+    /**
+     * Transforms the given byte array into a number in short form
+     * @param bytes the byte array to transform
+     * @return a Short representation of the array
+     */
+    private short bytesToShort(byte[] bytes) {
+        short retVal = 0;
+        // convert each byte into a hexadecimal value and convert that into ascii format
+        for (int j = 0; j < 2; j++) {
             int curByte = bytes[j];
             // bit-shift the byte by 8 to the proper location
             retVal |= (curByte << (8 * j)) & (0xFF  << (8 * j));

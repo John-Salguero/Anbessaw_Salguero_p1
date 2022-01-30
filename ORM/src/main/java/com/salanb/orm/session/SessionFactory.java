@@ -11,9 +11,19 @@ public interface SessionFactory {
     SessionImplementation getSession();
 
     void close();
-    Map<Class, Map<String, String>> getFieldMaps();
-    Map<Class, String> getTableMaps();
+    Map<Class<?>, Map<String, String>> getFieldMaps();
+    Map<Class<?>, String> getTableMaps();
     Map<String, Map<String, String>> getTableTypeMaps();
-    public Map<Class, List<String>> getPrimaryKeys();
+    Map<Class<?>, List<String>> getPrimaryKeys();
+    Map<Class<?>, List<SessionFactory.GeneratorType>> getGenerationType();
     Identifier getId(Object pojo);
+
+    /**
+     * The way new id's are generated
+     */
+    public enum GeneratorType {
+        DEFINED,
+        NATURAL,
+        FRAMEWORK
+    }
 }

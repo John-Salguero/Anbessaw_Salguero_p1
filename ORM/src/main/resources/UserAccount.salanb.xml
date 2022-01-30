@@ -9,10 +9,10 @@
         </meta>
 
         <id name = "username" type = "string" column = "Username">
-            <generator class="natural"/>
+            <generator class="DEFINED"/>
         </id>
         <id name = "accountId" type = "string" column = "Account_ID">
-            <generator class="natural"/>
+            <generator class="DEFINED"/>
         </id>
 
     </class>
