@@ -13,8 +13,12 @@ public interface SessionFactory {
     Map<Class<?>, Map<String, String>> getFieldMaps();
     Map<Class<?>, String> getTableMaps();
     Map<String, Map<String, String>> getTableTypeMaps();
+<<<<<<< HEAD
     Map<Class<?>, List<String>> getPrimaryKeys();
     Map<Class<?>, List<SessionFactory.GeneratorType>> getGenerationType();
+=======
+    Map<Class, List<String>> getPrimaryKeys();
+>>>>>>> TestBranch
     Identifier getId(Object pojo);
 
     /**

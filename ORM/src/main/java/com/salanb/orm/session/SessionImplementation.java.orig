@@ -1,10 +1,13 @@
 package com.salanb.orm.session;
 
+<<<<<<< HEAD
 import com.salanb.orm.logging.MyLogger;
 import com.salanb.orm.utillities.HashGenerator;
+=======
 import com.salanb.orm.session.Session;
 import com.salanb.orm.session.SessionFactory;
 import com.salanb.orm.session.Transaction;
+>>>>>>> TestBranch
 import com.salanb.orm.utillities.Identifier;
 import com.salanb.orm.utillities.JDBCConnection;
 import com.salanb.orm.utillities.ResourceNotFoundException;

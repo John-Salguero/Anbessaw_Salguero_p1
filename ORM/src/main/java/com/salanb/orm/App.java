@@ -11,6 +11,7 @@ import com.salanb.orm.session.Session;
 import com.salanb.orm.session.SessionFactory;
 import com.salanb.orm.session.SessionFactoryImplementation;
 import com.salanb.orm.session.Transaction;
+import com.salanb.orm.utillities.Identifier;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -66,6 +67,7 @@ public class App {
         typeMaps.put("character", Character.class);
         typeMaps.put("string", String.class);
         typeMaps.put("boolean", Bool.class);
+        typeMaps.put("double", Double.class);
     }
 
     /**
@@ -114,10 +116,12 @@ public class App {
             e.printStackTrace();
         }
         Transaction transaction = session.getTransaction();
-        Movie m = new Movie();
-        m.setId(32);
+        Movie m = new Movie(3, "Iron Man", new BigDecimal(2.5), true, 0);
         m = (Movie)transaction.get(m);
-        System.out.println(m);
+        m.setDirectorId(8);
+        Identifier id = transaction.update(m);
+        System.out.println(transaction.get(m.getClass(), id));
+        m.setPrice(new BigDecimal(7.5));
 
         UserContent u = new UserContent();
         u.setUsername("humongous.situation3362");
@@ -125,12 +129,12 @@ public class App {
         System.out.println(u);
 
         UserAccounts ua = new UserAccounts();
-        ua.setUsername("null");
-        ua.setAccountId("ae1d459bac7266fdc36001e6ff446bf563b7d4d861aeed75a642654e49eb2bae");
+        ua.setUsername("John.Salguero");
+        ua.setAccountId("9946472ebddf2c59b39a100872fcee851e0a498b70030f71f4c9d49fb0b9933a");
         ua = (UserAccounts) transaction.get(ua);
         System.out.println(ua);
-        ua = (UserAccounts) transaction.get(ua);
-        System.out.println(ua);
+
+        transaction.close();
 
     }
 

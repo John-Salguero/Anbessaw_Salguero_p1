@@ -1,7 +1,6 @@
 package com.salanb.orm.models;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 
 // Model is deigned to represent Data that we want to maintain within our application
 public class Movie {

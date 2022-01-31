@@ -8,8 +8,8 @@
             This class contains the movie detail.
         </meta>
 
-        <id name = "id" type = "int" column = "m_id">
-            <generator class="natural"/>
+        <id name = "id" type = "integer" column = "m_id">
+            <generator class="NATURAL"/>
         </id>
 
         <property name = "title" column = "title" type = "string"/>
@@ -27,7 +27,7 @@
         </meta>
 
         <id name = "username" type = "string" column = "Username">
-            <generator class="defined"/>
+            <generator class="DEFINED"/>
         </id>
 
         <property name = "firstName" column = "First_Name" type = "string"/>
