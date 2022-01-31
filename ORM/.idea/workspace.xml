@@ -5,19 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a254988-50cc-41e5-9dfe-8c5e6d6a5d13" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/test/session/SessionImplementationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ORM.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/Configuration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/models/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/models/Movie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/configuration/ConfigurationFactoryImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/configuration/ConfigurationFactoryImplementationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/configuration/SessionFactoryImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/session/SessionFactoryImplementationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/test/session/SessionFactoryImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/session/SessionFactoryImplementationTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,8 +48,40 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SessionFactoryImplementationTest.getId_Happy" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ORM" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.session.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test.session" />
+      <option name="MAIN_CLASS_NAME" value="test.session.SessionFactoryImplementationTest" />
+      <option name="METHOD_NAME" value="getId_Happy" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SessionFactoryImplementationTest.getId_Sad_NullPrimaryKey" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ORM" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.session.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test.session" />
+      <option name="MAIN_CLASS_NAME" value="test.session.SessionFactoryImplementationTest" />
+      <option name="METHOD_NAME" value="getId_Sad_NullPrimaryKey" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Unit Tests" type="JUnit" factoryName="JUnit" temporary="true">
-      <module name="salanb_orm" />
+      <module name="ORM" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.*" />
@@ -76,10 +99,14 @@
     <list>
       <item itemvalue="Application.App" />
       <item itemvalue="JUnit.Unit Tests" />
+      <item itemvalue="JUnit.SessionFactoryImplementationTest.getId_Happy" />
+      <item itemvalue="JUnit.SessionFactoryImplementationTest.getId_Sad_NullPrimaryKey" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.Unit Tests" />
+        <item itemvalue="JUnit.SessionFactoryImplementationTest.getId_Sad_NullPrimaryKey" />
+        <item itemvalue="JUnit.SessionFactoryImplementationTest.getId_Happy" />
         <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
@@ -105,5 +132,29 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="5" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$UnitTests.ic" NAME="UnitTests Coverage Results" MODIFIED="1643521607576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$Unit_Tests.ic" NAME="Unit Tests Coverage Results" MODIFIED="1643667591202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$ConfigurationUnitTest.ic" NAME="ConfigurationUnitTest Coverage Results" MODIFIED="1643411100918" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$SessionFactoryImplementationTest_getId_Happy.ic" NAME="SessionFactoryImplementationTest.getId_Happy Coverage Results" MODIFIED="1643665951800" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>test.session.*</FILTER>
+    </SUITE>
   </component>
 </project>

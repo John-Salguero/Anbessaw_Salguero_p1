@@ -216,7 +216,7 @@ public class SessionFactoryImplementation implements SessionFactory {
                 Field accessField = clazz.getDeclaredField(field);
                 accessField.setAccessible(true);
                 if(!retVal.add(accessField.get(pojo)))
-                    return null;
+                    throw new InputMismatchException("Primary key can not be null.");
             }
         } catch (NoSuchFieldException e) {
             String msg = "Class was incorrectly mapped, no such field";
