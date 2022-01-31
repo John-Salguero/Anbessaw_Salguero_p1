@@ -7,16 +7,16 @@ import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 
 
-class ConfigurationFactoryImplementationTest {
+public class ConfigurationFactoryImplementationTest {
 
     @Test
-    void getInstance() {
+    public void getInstance() {
        ConfigurationFactory obj = ConfigurationFactoryImplementation.getInstance();
        assertNotNull(obj);
     }
 
     @Test
-    void getConfigurations() {
+    public void getConfigurations() {
         ConfigurationFactoryImplementation.getInstance().getConfigurations("SalAnb.cfg.xml");
     }
 }

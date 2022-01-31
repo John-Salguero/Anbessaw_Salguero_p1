@@ -1,5 +1,8 @@
 package com.salanb.orm.session;
 
+import com.salanb.orm.session.Session;
+import com.salanb.orm.session.SessionFactory;
+import com.salanb.orm.session.Transaction;
 import com.salanb.orm.utillities.Identifier;
 import com.salanb.orm.utillities.JDBCConnection;
 
@@ -11,7 +14,7 @@ import java.util.Map;
 /**
  * Implementation for the Session which allows user to get transactions
  */
-public class SessionImplementation implements Session{
+public class SessionImplementation implements Session {
 
     // contains the connection to the Database
     JDBCConnection connection;

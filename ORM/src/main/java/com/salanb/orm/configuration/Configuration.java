@@ -1,6 +1,5 @@
 package com.salanb.orm.configuration;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**

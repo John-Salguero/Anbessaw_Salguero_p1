@@ -1,6 +1,5 @@
 package com.salanb.orm.session;
 
-import com.salanb.orm.configuration.Configuration;
 import com.salanb.orm.utillities.Identifier;
 
 import java.util.List;
@@ -14,6 +13,6 @@ public interface SessionFactory {
     Map<Class, Map<String, String>> getFieldMaps();
     Map<Class, String> getTableMaps();
     Map<String, Map<String, String>> getTableTypeMaps();
-    public Map<Class, List<String>> getPrimaryKeys();
+    Map<Class, List<String>> getPrimaryKeys();
     Identifier getId(Object pojo);
 }
