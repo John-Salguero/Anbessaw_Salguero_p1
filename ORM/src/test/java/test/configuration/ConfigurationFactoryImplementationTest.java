@@ -2,9 +2,10 @@ package test.configuration;
 
 import com.salanb.orm.configuration.ConfigurationFactory;
 import com.salanb.orm.configuration.ConfigurationFactoryImplementation;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertNotNull;
+
 
 class ConfigurationFactoryImplementationTest {
 
