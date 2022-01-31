@@ -1,23 +1,21 @@
-package test;
+package test.configuration;
 
 import com.salanb.orm.session.SessionFactory;
 import com.salanb.orm.session.SessionFactoryImplementation;
-import com.salanb.orm.session.SessionImplementation;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertNotNull;
 
 class SessionFactoryImplementationTest {
 
     @Test
     void getSession() {
-      SessionFactory (obj) = SessionFactoryImplementation.getSession();
+      SessionFactory obj = SessionFactoryImplementation.getSession();
         assertNotNull(obj);
     }
 
     @Test
     void close() {
-        assertNull(
     }
 
     @Test

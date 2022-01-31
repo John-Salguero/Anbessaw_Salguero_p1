@@ -1,4 +1,4 @@
-package test;
+package test.configuration;
 
 import com.salanb.orm.configuration.ConfigurationFactory;
 import com.salanb.orm.configuration.ConfigurationFactoryImplementation;
