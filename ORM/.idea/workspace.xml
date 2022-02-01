@@ -5,18 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a254988-50cc-41e5-9dfe-8c5e6d6a5d13" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/Configuration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/ConfigurationFactoryImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/ConfigurationFactoryImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Session.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactory.java.orig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java.orig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml.orig" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,20 +33,12 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
   </component>
-  <component name="RunManager" selected="Application.App">
-    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.salanb.orm.App" />
-      <module name="salanb_orm" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.salanb.orm.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn jar:jar" />
+    </option>
+  </component>
+  <component name="RunManager">
     <configuration name="Unit Tests" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="salanb_orm" />
       <extension name="coverage">
@@ -72,13 +55,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <list>
-      <item itemvalue="Application.App" />
-      <item itemvalue="JUnit.Unit Tests" />
-    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.App" />
         <item itemvalue="JUnit.Unit Tests" />
       </list>
     </recent_temporary>
