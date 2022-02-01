@@ -3,6 +3,7 @@ package com.salanb.orm.utillities;
 import com.salanb.orm.logging.MyLogger;
 
 import java.math.BigDecimal;
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -54,7 +55,7 @@ public class IdentifierImplementation extends LinkedList<Object> implements Iden
         if(obj == null) {
             String msg = "A Primary Key is not permitted to be null";
             MyLogger.logger.error(msg);
-            return false;
+            throw new InputMismatchException("Primary key can not be null.");
         }
 
         return super.add(obj);
