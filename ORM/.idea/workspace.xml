@@ -5,12 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a254988-50cc-41e5-9dfe-8c5e6d6a5d13" name="Changes" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/src/test/java/test/app/AppTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/test/session/SessionFactoryImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/session/SessionFactoryImplementationTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/test/session/SessionImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/session/SessionImplementationTest.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/Configuration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/ConfigurationFactoryImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/ConfigurationFactoryImplementation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Session.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactory.java.orig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java.orig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Transaction.java" afterDir="false" />
+>>>>>>> origin
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +68,7 @@
       <recent name="com.salanb.orm" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.Unit Tests">
+  <component name="RunManager" selected="Application.App">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.salanb.orm.App" />
       <module name="salanb_orm" />
@@ -140,11 +155,15 @@
     </list>
     <recent_temporary>
       <list>
+<<<<<<< HEAD
         <item itemvalue="JUnit.Unit Tests" />
         <item itemvalue="JUnit.SessionImplementationTest.getConnection" />
         <item itemvalue="JUnit.SessionFactoryImplementationTest.getTableMaps" />
         <item itemvalue="JUnit.SessionFactoryImplementationTest.getFieldMaps" />
+=======
+>>>>>>> origin
         <item itemvalue="Application.App" />
+        <item itemvalue="JUnit.Unit Tests" />
       </list>
     </recent_temporary>
   </component>
@@ -173,10 +192,11 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.lang.NullPointerException" package="java.lang" />
-          <option name="timeStamp" value="5" />
-        </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java</url>
+          <line>901</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -201,6 +221,9 @@
     </SUITE>
     <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$SessionFactoryImplementationTest_getFieldMaps.ic" NAME="SessionFactoryImplementationTest.getFieldMaps Coverage Results" MODIFIED="1643738152921" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>test.session.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/salanb_orm$App.ic" NAME="App Coverage Results" MODIFIED="1643691978747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.salanb.orm.*</FILTER>
     </SUITE>
   </component>
 </project>

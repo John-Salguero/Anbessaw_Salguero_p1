@@ -4,13 +4,9 @@ import com.salanb.orm.configuration.Configuration;
 import com.salanb.orm.configuration.ConfigurationFactory;
 import com.salanb.orm.configuration.ConfigurationFactoryImplementation;
 import com.salanb.orm.logging.MyLogger;
-import com.salanb.orm.models.Movie;
-import com.salanb.orm.models.UserAccounts;
-import com.salanb.orm.models.UserContent;
 import com.salanb.orm.session.Session;
 import com.salanb.orm.session.SessionFactory;
 import com.salanb.orm.session.SessionFactoryImplementation;
-import com.salanb.orm.session.Transaction;
 import com.salanb.orm.utillities.Identifier;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
@@ -45,8 +41,8 @@ public class App {
     static private final String FILENAME;
     static private final ConfigurationFactory factory;
     static private  final Map<String, Configuration> configs;
-    static private Map<String, SessionFactory> sessionFactories;
-    public static final Map<String, Class> typeMaps;
+    static private final Map<String, SessionFactory> sessionFactories;
+    public static final Map<String, Class<?>> typeMaps;
 
 
     // Static block that executes when the app is loaded into memory
@@ -91,51 +87,42 @@ public class App {
      * @param name - the name of the session factory if one is not provided it defaults to the nameless one
      * @return - A Session object that can be used for transactions
      */
-    public Session getNewSession(String name) throws ParserConfigurationException {
+    public Session getNewSession(String name) {
         if(!sessionFactories.containsKey("")){
             MyLogger.logger.error("Trying to get a session from an unconfigured factory");
-            throw new ParserConfigurationException("Trying to get a session from an unconfigured factory");
+            throw new RuntimeException("Trying to get a session from an unconfigured factory");
         }
 
         return sessionFactories.get(name).getSession();
     }
 
+    /**
+     * Given an object returns the identifier of the default factory
+     * @param pojo The object which needs to get the id
+     * @return the primary/composite key of the object
+     */
+    public Identifier getId(Object pojo) {
+        if(!sessionFactories.containsKey("")){
+            MyLogger.logger.error("Trying to get a session from an unconfigured factory");
+            throw new RuntimeException("Trying to get a session from an unconfigured factory");
+        }
 
+        return sessionFactories.get("").getId(pojo);
+    }
 
     /**
-     * Test main please ignore
-     *
-     * @param args - What??? Why would you pass in args to this?
+     * Given an object and factory name returns the identifier of the named factory
+     * @param factoryName The name of the factory to retrieve the id from
+     * @param pojo The object which needs to get the id
+     * @return the primary/composite key of the object
      */
-    public static void main(String[] args) {
-//        App thisInstance = App.getInstance();
-//        Session session = null;
-//        try {
-//            session = thisInstance.getNewSession();
-//        } catch (ParserConfigurationException e) {
-//            e.printStackTrace();
-//        }
-//        Transaction transaction = session.getTransaction();
-//        Movie m = new Movie(3, "Iron Man", new BigDecimal(2.5), true, 0);
-//        m = (Movie)transaction.get(m);
-//        //m.setDirectorId(8);
-//        Identifier id = transaction.update(m);
-//        System.out.println(transaction.get(m.getClass(), id));
-//        m.setPrice(new BigDecimal(7.5));
-//
-//        UserContent u = new UserContent();
-//        u.setUsername("humongous.situation3362");
-//        u = (UserContent) transaction.get(u);
-//        System.out.println(u);
-//
-//        UserAccounts ua = new UserAccounts();
-//        ua.setUsername("John.Salguero");
-//        ua.setAccountId("9946472ebddf2c59b39a100872fcee851e0a498b70030f71f4c9d49fb0b9933a");
-//        ua = (UserAccounts) transaction.get(ua);
-//        System.out.println(ua);
-//
-//        transaction.close();
+    public Identifier getId(String factoryName, Object pojo) {
+        if(!sessionFactories.containsKey(factoryName)){
+            MyLogger.logger.error("Trying to get a session from an unconfigured factory");
+            throw new RuntimeException("Trying to get a session from an unconfigured factory");
+        }
 
+        return sessionFactories.get(factoryName).getId(pojo);
     }
 
     /**
