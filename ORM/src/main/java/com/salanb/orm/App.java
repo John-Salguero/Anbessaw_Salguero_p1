@@ -108,33 +108,33 @@ public class App {
      * @param args - What??? Why would you pass in args to this?
      */
     public static void main(String[] args) {
-        App thisInstance = App.getInstance();
-        Session session = null;
-        try {
-            session = thisInstance.getNewSession();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
-        Transaction transaction = session.getTransaction();
-        Movie m = new Movie(3, "Iron Man", new BigDecimal(2.5), true, 0);
-        m = (Movie)transaction.get(m);
-        m.setDirectorId(8);
-        Identifier id = transaction.update(m);
-        System.out.println(transaction.get(m.getClass(), id));
-        m.setPrice(new BigDecimal(7.5));
-
-        UserContent u = new UserContent();
-        u.setUsername("humongous.situation3362");
-        u = (UserContent) transaction.get(u);
-        System.out.println(u);
-
-        UserAccounts ua = new UserAccounts();
-        ua.setUsername("John.Salguero");
-        ua.setAccountId("9946472ebddf2c59b39a100872fcee851e0a498b70030f71f4c9d49fb0b9933a");
-        ua = (UserAccounts) transaction.get(ua);
-        System.out.println(ua);
-
-        transaction.close();
+//        App thisInstance = App.getInstance();
+//        Session session = null;
+//        try {
+//            session = thisInstance.getNewSession();
+//        } catch (ParserConfigurationException e) {
+//            e.printStackTrace();
+//        }
+//        Transaction transaction = session.getTransaction();
+//        Movie m = new Movie(3, "Iron Man", new BigDecimal(2.5), true, 0);
+//        m = (Movie)transaction.get(m);
+//        //m.setDirectorId(8);
+//        Identifier id = transaction.update(m);
+//        System.out.println(transaction.get(m.getClass(), id));
+//        m.setPrice(new BigDecimal(7.5));
+//
+//        UserContent u = new UserContent();
+//        u.setUsername("humongous.situation3362");
+//        u = (UserContent) transaction.get(u);
+//        System.out.println(u);
+//
+//        UserAccounts ua = new UserAccounts();
+//        ua.setUsername("John.Salguero");
+//        ua.setAccountId("9946472ebddf2c59b39a100872fcee851e0a498b70030f71f4c9d49fb0b9933a");
+//        ua = (UserAccounts) transaction.get(ua);
+//        System.out.println(ua);
+//
+//        transaction.close();
 
     }
 

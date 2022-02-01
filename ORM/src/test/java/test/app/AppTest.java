@@ -1,4 +1,4 @@
-package com.salanb.orm;
+package test.app;
 
 import org.junit.Test;
 
@@ -8,6 +8,7 @@ public class AppTest {
 
     @Test
     public void getInstance() {
+
     }
 
     @Test
