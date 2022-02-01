@@ -8,7 +8,6 @@ import javafx.util.Pair;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.rmi.NoSuchObjectException;
 import java.sql.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -88,18 +87,18 @@ public class SessionImplementation implements Session {
      * @return True if the session is valid
      */
     @Override
-    public boolean isValid(){
+    public boolean isInvalid(){
         try {
         Connection con = connection.getConnection();
             if(con != null && con.isValid(30))
-               return isValid;
+               return !isValid;
         } catch (SQLException e) {
             String msg = "An unknown fatal error occurred";
             MyLogger.logger.fatal(msg);
             throw new RuntimeException(msg, e);
         }
 
-        return false;
+        return true;
     }
 
     /**

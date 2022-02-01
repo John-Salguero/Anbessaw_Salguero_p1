@@ -4,26 +4,18 @@ import com.salanb.orm.configuration.Configuration;
 import com.salanb.orm.configuration.ConfigurationFactory;
 import com.salanb.orm.configuration.ConfigurationFactoryImplementation;
 import com.salanb.orm.logging.MyLogger;
-import com.salanb.orm.models.Movie;
-import com.salanb.orm.models.UserAccounts;
-import com.salanb.orm.models.UserContent;
 import com.salanb.orm.session.Session;
 import com.salanb.orm.session.SessionFactory;
 import com.salanb.orm.session.SessionFactoryImplementation;
-import com.salanb.orm.session.Transaction;
 import com.salanb.orm.utillities.Identifier;
-import com.salanb.orm.utillities.ResourceNotFoundException;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,8 +41,8 @@ public class App {
     static private final String FILENAME;
     static private final ConfigurationFactory factory;
     static private  final Map<String, Configuration> configs;
-    static private Map<String, SessionFactory> sessionFactories;
-    public static final Map<String, Class> typeMaps;
+    static private final Map<String, SessionFactory> sessionFactories;
+    public static final Map<String, Class<?>> typeMaps;
 
 
     // Static block that executes when the app is loaded into memory
@@ -120,55 +112,17 @@ public class App {
 
     /**
      * Given an object and factory name returns the identifier of the named factory
+     * @param factoryName The name of the factory to retrieve the id from
      * @param pojo The object which needs to get the id
-     * @param name The name of the factory to retrieve the id from
      * @return the primary/composite key of the object
      */
-    public Identifier getId(Object pojo, String name) {
-        if(!sessionFactories.containsKey(name)){
+    public Identifier getId(String factoryName, Object pojo) {
+        if(!sessionFactories.containsKey(factoryName)){
             MyLogger.logger.error("Trying to get a session from an unconfigured factory");
             throw new RuntimeException("Trying to get a session from an unconfigured factory");
         }
 
-        return sessionFactories.get(name).getId(pojo);
-    }
-
-
-
-    /**
-     * Test main please ignore
-     *
-     * @param args - What??? Why would you pass in args to this?
-     */
-    public static void main(String[] args) {
-        App thisInstance = App.getInstance();
-        Session session = null;
-        try {
-            session = thisInstance.getNewSession();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
-        Transaction transaction = session.getTransaction();
-
-
-        UserContent u = new UserContent();
-        u.setUsername("humongous.situation3362");
-        u = (UserContent) transaction.get(u);
-        System.out.println(u);
-
-        UserAccounts ua = new UserAccounts();
-        ua.setUsername("John.Salguero");
-        ua.setAccountId("9946472ebddf2c59b39a100872fcee852e0a498b70030f71f4c9d49fb0b9933a");
-
-        try {
-            ua = (UserAccounts) transaction.update(ua);
-        } catch (ResourceNotFoundException e) {
-            e.printStackTrace();
-        }
-        System.out.println(ua);
-
-        transaction.close();
-
+        return sessionFactories.get(factoryName).getId(pojo);
     }
 
     /**

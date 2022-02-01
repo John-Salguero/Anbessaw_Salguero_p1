@@ -181,7 +181,7 @@ public class SessionFactoryImplementation implements SessionFactory {
      */
     @Override
     public void close() {
-        // TODO write the cached data and deleted data upon close
+        getSession().writeAllCache(cachedData, cacheToDelete);
     }
 
     /**
@@ -370,19 +370,6 @@ public class SessionFactoryImplementation implements SessionFactory {
     }
 
     /**
-     * given an object, sets that object to be deleted
-     * @param pojo - Object to be deleted
-     * @return The object that was successfully added to be deleted
-     */
-    synchronized Object addCachedToDelete(Object pojo) {
-
-        String tableName = tableMaps.get(pojo.getClass());
-        Identifier id = getId(pojo);
-
-        return  addCachedToDelete(tableName, id);
-    }
-
-    /**
      * given a tableName and an id, removes that object to be deleted
      * @param tableName - the table name where the object belongs
      * @param id - the object's primary/composite key
@@ -391,20 +378,6 @@ public class SessionFactoryImplementation implements SessionFactory {
     synchronized boolean removeCacheToDelete(String tableName, Identifier id) {
 
         return cacheToDelete.get(tableName).remove(id);
-    }
-
-    /**
-     * given an object, remove it from the cache to be deleted
-     * @param pojo - The object to remove from the cache
-     * @return True if the object was successfully removed
-     */
-    synchronized boolean removeCacheToDelete(Object pojo) {
-
-        Class<?> clazz = pojo.getClass();
-        String tableName = tableMaps.get(clazz);
-        Identifier id = getId(pojo);
-        return cacheToDelete.get(tableName).
-                remove(new Pair<Class<?>, Identifier>(clazz, id));
     }
 
     /**
@@ -419,6 +392,7 @@ public class SessionFactoryImplementation implements SessionFactory {
      * Retrieve the data cached to delete
      * @return The data needed to be deleted
      */
+
     public Map<String, Set<Pair<Class<?>, Identifier>>> getCacheToDelete() {
         return cacheToDelete;
     }

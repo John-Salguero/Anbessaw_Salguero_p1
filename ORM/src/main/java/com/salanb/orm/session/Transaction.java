@@ -29,15 +29,9 @@ public class Transaction {
      */
     public Object save(Object pojo) throws IllegalStateException {
 
-        if(!parent.isValid())
+        if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
 
-        // the class of the object
-        Class<?> clazz = pojo.getClass();
-
-
-        // get the session factory
-        SessionFactoryImplementation sf = (SessionFactoryImplementation) parent.getParent();
         // Throws if it cannot be saved
         objectCanBeSaved(pojo);
         // Generate the Ids that have been configured to be generated
@@ -85,7 +79,7 @@ public class Transaction {
      */
     public Object update(Object pojo) throws ResourceNotFoundException {
 
-        if(!parent.isValid())
+        if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
 
         Object oldPOJO = get(pojo);
@@ -110,7 +104,7 @@ public class Transaction {
      */
     public Object delete(Object pojo){
 
-        if(!parent.isValid())
+        if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
 
         SessionFactoryImplementation sf = (SessionFactoryImplementation) parent.getParent();
@@ -136,7 +130,7 @@ public class Transaction {
      */
     public Object get(Class<?> clazz, Identifier id){
 
-        if(!parent.isValid())
+        if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
 
         return ((SessionImplementation)parent).getObjectFromRepo(clazz, id);
@@ -149,7 +143,7 @@ public class Transaction {
      */
     public List<Object> getTable(Class<?> clazz){
 
-        if(!parent.isValid())
+        if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
 
         return parent.getTableFromRepo(clazz);
@@ -162,7 +156,7 @@ public class Transaction {
      */
     public List<Object> getTable(Object pojo){
 
-        if(!parent.isValid())
+        if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
 
         return parent.getTableFromRepo(pojo.getClass());
@@ -176,7 +170,7 @@ public class Transaction {
      */
     public Object get(Object pojo){
 
-        if(!parent.isValid())
+        if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
 
         if(pojo == null) {

@@ -68,7 +68,7 @@ public class ConfigurationFactoryImplementation implements ConfigurationFactory 
             // make a configuration for them
             for (int i = 0; i < factoryList.getLength(); ++i) {
 
-                String name = null;
+                String name;
                 String driver = null;
                 String url = null;
                 String username = null;

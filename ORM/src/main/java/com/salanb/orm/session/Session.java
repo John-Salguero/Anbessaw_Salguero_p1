@@ -23,5 +23,5 @@ public interface Session {
     void setDirtyFlag(Identifier key);
     JDBCConnection getConnection();
     List<Object> getTableFromRepo(Class<?> clazz);
-    boolean isValid();
+    boolean isInvalid();
 }

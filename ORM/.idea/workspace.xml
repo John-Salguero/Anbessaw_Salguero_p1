@@ -5,14 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a254988-50cc-41e5-9dfe-8c5e6d6a5d13" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/models/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/models/Movie.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/Configuration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/ConfigurationFactoryImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/ConfigurationFactoryImplementation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Session.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactory.java.orig" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java.orig" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Transaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/utillities/IdentifierImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/utillities/IdentifierImplementation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,12 +110,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java</url>
-          <line>143</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java</url>
-          <line>902</line>
+          <line>901</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>
