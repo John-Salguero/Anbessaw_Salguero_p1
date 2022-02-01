@@ -4,6 +4,7 @@ import com.salanb.orm.utillities.Identifier;
 import com.salanb.orm.utillities.JDBCConnection;
 import javafx.util.Pair;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,12 +16,12 @@ public interface Session {
     void close();
     void writeAllCache(
     Map<String, Map<Identifier, Object>> cachedData,
-    Map<String, Set<Pair<Class<?>, Identifier>>> cacheToDelete,
-    Map<String, Set<Identifier>> cacheToSave);
+    Map<String, Set<Pair<Class<?>, Identifier>>> cacheToDelete);
 
     SessionFactory getParent();
     Transaction getTransaction();
     void setDirtyFlag(Identifier key);
     JDBCConnection getConnection();
+    List<Object> getTableFromRepo(Class<?> clazz);
     boolean isValid();
 }

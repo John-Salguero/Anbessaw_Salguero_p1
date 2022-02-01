@@ -1,10 +1,6 @@
 package com.salanb.orm.session;
 
 import com.salanb.orm.logging.MyLogger;
-import com.salanb.orm.utillities.HashGenerator;
-import com.salanb.orm.session.Session;
-import com.salanb.orm.session.SessionFactory;
-import com.salanb.orm.session.Transaction;
 import com.salanb.orm.utillities.Identifier;
 import com.salanb.orm.utillities.JDBCConnection;
 import com.salanb.orm.utillities.ResourceNotFoundException;
@@ -12,9 +8,10 @@ import javafx.util.Pair;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.rmi.NoSuchObjectException;
 import java.sql.*;
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Implementation for the Session which allows user to get transactions
@@ -106,28 +103,25 @@ public class SessionImplementation implements Session {
     }
 
     /**
-     * given a table name and id, save the object in cache to the database
-     * @param tableName - The name of the table that holds the info of the object
-     * @param id - the framework specified id of the object
+     * given a mapped pojo, save the object in cache and to the database
+     * @param pojo The object to save
+     * @return The object that was saved
      */
-    private Object save(String tableName, Identifier id) throws ResourceNotFoundException {
-
-        Object savePOJO = ((SessionFactoryImplementation)parent).getFromCachedData(tableName, id);
-        if(savePOJO == null)
-            throw new ResourceNotFoundException("The object is not in the cache");
+    Object save(Object pojo) {
 
         // The Class of the object to update
-        Class<?> clazz = savePOJO.getClass();
-
+        Class<?> clazz = pojo.getClass();
+        // The table name of the object in the database
+        String tableName = parent.getTableMaps().get(clazz);
 
         // Get the SQL Query
         String query = getSaveQuery(tableName, clazz);
         // Prepare the Statement and execute it
-        return executeSQLINSERTStatement(savePOJO, id, query);
+        return executeSQLINSERTStatement(pojo, query);
     }
 
     /**
-     * Given a tablename and an id, update the data of the object in the id
+     * Given a table name and an id, update the data of the object in the id
      * @param tableName - Table in the database that holds the data in the object
      * @param id - Framework specified identifier for the data in the database
      * @return - The object that was updated in the database
@@ -145,8 +139,11 @@ public class SessionImplementation implements Session {
 
         // Get the SQL Query
         String query = getUpdateQuery(tableName, clazz);
-        // Prepare the Statement and execute it
-        return executeSQLStatement(clazz, id, query);
+        // Prepare the Statement
+        AtomicInteger placementPos = new AtomicInteger(0);
+        PreparedStatement ps = prepareUpdateSQLStatement(updatePOJO, id, query, placementPos);
+        // execute it
+        return executeSQLStatement(clazz, id, ps, placementPos.get());
 
     }
 
@@ -155,8 +152,9 @@ public class SessionImplementation implements Session {
      * @param clazz - The class of the object associated with the data of the database
      * @param id - The framework assigned id which represents the primary key
      * @return - The object that was deleted
+     * @throws RuntimeException - is thrown when connection to the database cannot be established
      */
-    private Object delete(Class<?> clazz, Identifier id){
+    private Object delete(Class<?> clazz, Identifier id) {
 
         Object deletePOJO = getObjectFromRepo(clazz, id);
         if(deletePOJO == null)
@@ -168,8 +166,17 @@ public class SessionImplementation implements Session {
 
         // Get the SQL Query
         String query = getDeleteQuery(tableName, clazz);
-        // Prepare the Statement and execute it
-        return executeSQLStatement(clazz, id, query);
+        // Prepare the Statement
+        PreparedStatement ps;
+        try {
+            ps = connection.getConnection().prepareStatement(query);
+        } catch (SQLException e) {
+            String msg = "Could not connect to the database.";
+            MyLogger.logger.error(msg);
+            throw new RuntimeException(msg);
+        }
+        // Execute the statement
+        return  executeSQLStatement(clazz, id, ps, 0);
     }
 
 
@@ -180,8 +187,9 @@ public class SessionImplementation implements Session {
      * @param clazz The class of the object to get
      * @param id The framework supplied ID for the object
      * @return The object associated with the ID from the repo
+     * @throws RuntimeException - is thrown when connection to the database cannot be established
      */
-    Object getObjectFromRepo(Class<?> clazz, Identifier id){
+    Object getObjectFromRepo(Class<?> clazz, Identifier id) {
 
         // if the id isn't supplied, there is nothing to get
         if(id == null) {
@@ -202,8 +210,60 @@ public class SessionImplementation implements Session {
 
         // start query to use for the database
         String query = getSelectQuery(clazz, tableName);
-        // Prepare the Statement and execute it
-        return executeSQLStatement(clazz, id, query);
+        // Prepare the Statement
+        PreparedStatement ps;
+        try {
+            ps = connection.getConnection().prepareStatement(query);
+        } catch (SQLException e) {
+            String msg = "Could not connect to the database.";
+            MyLogger.logger.error(msg);
+            throw new RuntimeException(msg);
+        }
+        // Execute the statement
+        return  executeSQLStatement(clazz, id, ps, 0);
+    }
+
+    /**
+     * Given a class, get that classes data in the form of a list
+     * @param clazz - The class to get all the tables from
+     * @return A list of all the objects of the mapped class
+     */
+    @Override
+    public List<Object> getTableFromRepo(Class<?> clazz) {
+
+        List<Object> retVal = new ArrayList<>();
+        SessionFactoryImplementation sf = (SessionFactoryImplementation) getParent();
+        Map<String, String> fieldToNamesMap = sf.getFieldMaps().get(clazz);
+
+        String tableName = parent.getTableMaps().get(clazz);
+        if(tableName == null) {
+            String msg = "This class is not mapped in the configuration: " + clazz;
+            MyLogger.logger.fatal(msg);
+            throw new RuntimeException(msg);
+        }
+
+        try {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement ps = connection.getConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Object pojo = buildObject(clazz, rs, fieldToNamesMap);
+                if (pojo != null) {
+                    if (!(sf.isCachedData(pojo)))
+                        ((SessionFactoryImplementation) getParent()).
+                                addToCachedData(pojo);
+                    retVal.add(pojo);
+                }
+            }
+        }catch (SQLException e) {
+            String msg = "could not retrieve data from table " + tableName;
+            MyLogger.logger.fatal(msg);
+            throw new RuntimeException(msg, e);
+        }
+
+
+        return retVal;
     }
 
     /**
@@ -236,7 +296,7 @@ public class SessionImplementation implements Session {
                 query.append(", \"");
         }
 
-        // add the From Clause
+        // add the "From Clause"
         query.append(" FROM \"").append(tableName);
 
         // add the Where Clause
@@ -316,14 +376,11 @@ public class SessionImplementation implements Session {
             String name = fieldToNamesMap.get(field.getName());
             if(name != null) // if the field has been mapped to the table
             {
-                // if the field is an id generate the id placeholder
-                if (nextId.equals(field.getName())) {
-                    // provide a generated placeholder based on configured value
-                    if (genIt.next() == SessionFactory.GeneratorType.NATURAL) { // let the Database determine the id
-                        query.append("DEFAULT, ");
-                    } else {
-                        query.append("?, ");
-                    }
+                // if the field is an id and naturally generated, add the default keyword
+                if (nextId.equals(name) &&
+                        genIt.next() == SessionFactory.GeneratorType.NATURAL) {
+                     // let the Database determine the id
+                     query.append("DEFAULT, ");
                 } else { // no special id generation, just add a placeholder
                     query.append("?, ");
                 }
@@ -354,10 +411,9 @@ public class SessionImplementation implements Session {
         // Get the column names
         for(Field field : clazz.getDeclaredFields()){
             String name = fieldToNamesMap.get(field.getName());
-            if(name != null) // if the field has been mapped to the table
+            // if the field has been mapped to the table and is not a primary key
+            if(name != null && !primaryKey.contains(name))
                 query.append(name).append("\"=?, \"");
-
-            // TODO set the update query properly
         }
         query.setLength(query.length() - 3);
 
@@ -378,11 +434,10 @@ public class SessionImplementation implements Session {
      * Given an object, id, map of field names to column names, and an SQL query - execute the query and
      * build a pojo representing the data retrieved from the Database
      * @param pojo - The object to save
-     * @param id - The framework ID for the object
      * @param query - The SQL Query to execute
      * @return - Returns the object retrieved if the query retrieved any data
      */
-    private Object executeSQLINSERTStatement(Object pojo, Identifier id, String query) {
+    private Object executeSQLINSERTStatement(Object pojo, String query) {
         // The object to return
         Object retVal;
 
@@ -422,22 +477,18 @@ public class SessionImplementation implements Session {
                     String type = columnToTypeMap.get(columnName);
 
                     // if the field is an id generate the id
-                    if(nextId.equals(field.getName())){
-                        switch (genIt.next()){ // provide a generated ID based on configured value
-                            // generate the ids
-                            case DEFINED: // just use the object's id
-                                field.setAccessible(true);
-                                value = field.getInt(pojo);
-                                // set the placeholder
-                                setPlaceholder(type, value, ps, ++i);
-                                break;
-                            case NATURAL: // let the Database determine the id
-                                continue;
-                            case FRAMEWORK: // We determine the id
-                                value = generateId(type);
-                                setPlaceholder(type, value, ps, ++i);
+                    if(nextId.equals(columnName)){
+                        // if the generation type is natural, let the database take care of it
+                        if(genIt.next() == SessionFactory.GeneratorType.NATURAL) {
+                            continue;
+                        } else { // if we defined the id, use is as a placeholder
+                            field.setAccessible(true);
+                            value = field.getInt(pojo);
+                            // set the placeholder
+                            setPlaceholder(type, value, ps, ++i);
                         }
-                        if(primIt.hasNext()) { // if we have more id's to check for
+                        // if we have more id's to check for get the next one
+                        if(primIt.hasNext()) {
                             nextId = primIt.next();
                         }
                     } else { // The field is not an ID just save it
@@ -454,19 +505,22 @@ public class SessionImplementation implements Session {
 
             if(rs.next()){
                 retVal = buildObject(clazz, rs, fieldToNamesMap);
-                if(retVal != null)
-                    ((SessionFactoryImplementation)getParent()).
+                if(retVal != null) {
+                    ((SessionFactoryImplementation) getParent()).
                             addToCachedData(retVal);
+                    ((SessionFactoryImplementation) getParent()).
+                            removeFromCachedData(pojo);
+                }
                 return retVal;
             }
 
         }catch (SQLException e) {
-            String msg = "Could not save object to Database" + clazz + " " + id;
+            String msg = "Could not save object to Database" + clazz;
             msg += "\n" + e.getMessage();
             MyLogger.logger.error(msg);
             return null;
         } catch (IllegalAccessException e) {
-            String msg = "Could not access a field in " + clazz + " " + id;
+            String msg = "Could not access a field in " + clazz;
             msg += "\n" + e.getMessage();
             MyLogger.logger.error(msg);
             return null;
@@ -477,26 +531,90 @@ public class SessionImplementation implements Session {
     }
 
     /**
-     * Given a class, id, map of field names to column names, and an SQL query - execute the query and
-     * build a pojo representing the data retrieved from the Database
-     * @param clazz - The class of the object
+     * Given a class, id, map of field names to column names, and an SQL query in a String -
+     * prepare the statement query and return it to prepped tp be executed
+     * @param updatePOJO - The object representing the data in the DB we want to update
      * @param id - The framework ID for the object
      * @param query - The SQL Query to execute
      * @return - Returns the object retrieved if the query retrieved any data
      */
-    private Object executeSQLStatement(Class<?> clazz, Identifier id, String query) {
+    private PreparedStatement prepareUpdateSQLStatement(Object updatePOJO, Identifier id,
+                                                        String query, AtomicInteger placementPos) {
+
+        PreparedStatement ps; // the prepared statement
+        Object placeholder;   // the value as an object of the next placeholder
+        Class<?> clazz = updatePOJO.getClass(); // the class of the object
+        Map<String, String> fieldToNamesMap = parent.getFieldMaps().get(clazz); // map of fields to column names
+        List<String> primaryKey = parent.getPrimaryKeys().get(clazz); // a list of fields used as primary keys
+
+        try {
+            ps = getConnection().getConnection().prepareStatement(query);
+            // Iterate through all the Fields and set the placeholders if they are not primary keys
+            int i = 0;
+            for(Field field : clazz.getDeclaredFields()){
+                String name = fieldToNamesMap.get(field.getName());
+                // if the field has been mapped to the table and is not a primary key
+                if(name != null && !primaryKey.contains(name)) {
+                    field.setAccessible(true);
+                    placeholder = field.get(updatePOJO);
+                }else // if the field is either not mapped, or is a primary key, continue to the other fields
+                    continue;
+                placementPos.set(placementPos.get() + 1);
+                if(placeholder == null){
+                    ps.setNull(++i, Types.NULL);
+                    continue;
+                }
+                Class<?> placeholderClass = placeholder.getClass();
+                if (placeholderClass == Integer.class) {
+                    ps.setInt(++i, (Integer) placeholder);
+                } else if (placeholderClass == Long.class) {
+                    ps.setLong(++i, (Long) placeholder);
+                } else if (placeholderClass == Short.class) {
+                    ps.setShort(++i, (Short) placeholder);
+                } else if (placeholderClass == BigDecimal.class) {
+                    ps.setBigDecimal(++i, (BigDecimal) placeholder);
+                } else if (placeholderClass == Character.class) {
+                    ps.setNString(++i, ((Character) placeholder).toString());
+                } else if (placeholderClass == String.class) {
+                    ps.setString(++i, (String) placeholder);
+                } else if (placeholderClass == Boolean.class) {
+                    ps.setBoolean(++i, (Boolean) placeholder);
+                } else if (placeholderClass == Double.class) {
+                    ps.setDouble(++i, (Double) placeholder);
+                } else {
+                    MyLogger.logger.fatal("an undefined class was used as a primary/composite key");
+                    throw new RuntimeException("an undefined class was used as a primary/composite key");
+                }
+            }
+        } catch (SQLException | IllegalAccessException e) {
+            String msg = "Could not access a prepared statement for " + clazz + " " + id;
+            MyLogger.logger.error(msg);
+            throw new RuntimeException(msg, e);
+        }
+
+        return  ps;
+    }
+
+    /**
+     * Given a class, id, map of field names to column names, and an SQL query - execute the query and
+     * build a pojo representing the data retrieved from the Database
+     * @param clazz - The class of the object
+     * @param id - The framework ID for the object
+     * @param ps - The SQL Query to execute
+     * @param placementPos - The position of where to start inserting the primary key
+     * @return - Returns the object retrieved if the query retrieved any data
+     */
+    private Object executeSQLStatement(Class<?> clazz, Identifier id, PreparedStatement ps, int placementPos) {
         Object retVal;
 
         // A map of the object's field names to the database's table column names
         Map<String, String> fieldToNamesMap = parent.getFieldMaps().get(clazz);
 
-        PreparedStatement ps;
         try {
-            ps = getConnection().getConnection().prepareStatement(query);
 
             // Iterate through all the primary keys and set the placeholders
             Iterator<Object> idIt = id.iterator();
-            int i = 0;
+            int i = placementPos;
             while(idIt.hasNext()){
                 Object placeholder = idIt.next();
                 Class<?> placeholderClass = placeholder.getClass();
@@ -517,8 +635,8 @@ public class SessionImplementation implements Session {
                 }else if(placeholderClass == Double.class){
                     ps.setDouble(++i, (Double) placeholder);
                 }else {
-                    MyLogger.logger.fatal("an undefiened class was used as a primary/composite key");
-                    throw new RuntimeException("an undefiened class was used as a primary/composite key");
+                    MyLogger.logger.fatal("an undefined class was used as a primary/composite key");
+                    throw new RuntimeException("an undefined class was used as a primary/composite key");
                 }
             }
 
@@ -535,44 +653,11 @@ public class SessionImplementation implements Session {
 
         }catch (SQLException e) {
             String msg = "Could not update object on Database" + clazz + " " + id;
-            msg += "\n" + e.getMessage();
             MyLogger.logger.error(msg);
-            return null;
+            throw new RuntimeException(msg, e);
         }
         // nothing was found return null
         return null;
-    }
-
-    /**
-     * Generate an Id based on the type I just randomly take a Hash and use that
-     * There might be some collisions, this is not recommended
-     * @param type The type of object to generate
-     * @return The new ID
-     */
-    private Object generateId(String type) {
-        double randSeed = Math.random();
-        switch (type) {
-            case "integer":
-                return HashGenerator.getInstance().getMessageDigestInt(Double.toString(randSeed));
-            case "long":
-                return HashGenerator.getInstance().getMessageDigestLong(Double.toString(randSeed));
-            case "short":
-                return HashGenerator.getInstance().getMessageDigestShort(Double.toString(randSeed));
-            case "big_decimal":
-                return new BigDecimal(randSeed);
-            case "character":
-                return HashGenerator.getInstance().getMessageDigestString(Double.toString(randSeed)).charAt(0);
-            case "string":
-                return HashGenerator.getInstance().getMessageDigestString(Double.toString(randSeed));
-            case "boolean":
-                return randSeed > .5;
-            case "double":
-                return randSeed;
-            default:
-                String msg = "Mapped field has malformed type attribute";
-                MyLogger.logger.fatal(msg);
-                throw new InputMismatchException(msg);
-        }
     }
 
     /**
@@ -631,7 +716,7 @@ public class SessionImplementation implements Session {
      * construct an object and return it to caller
      * @param clazz - The class of the object to construct
      * @param rs - the Result set from the Query
-     * @param fieldToNamesMap - A Map of a class's fields to it's table names
+     * @param fieldToNamesMap - A Map of a class's fields to its table names
      * @return The new object constructed with the information
      */
     private Object buildObject(Class<?> clazz, ResultSet rs, Map<String, String> fieldToNamesMap) {
@@ -807,25 +892,6 @@ public class SessionImplementation implements Session {
         final SessionFactoryImplementation sf = (SessionFactoryImplementation) parent;
         Map<String, Map<Identifier, Object>> cachedData = sf.getCachedData();
         Map<String, Set<Pair<Class<?>, Identifier>>> cacheToDelete = sf.getCacheToDelete();
-        Map<String, Set<Identifier>> cacheToSave = sf.getCacheToSave();
-
-        // Save All the new Objects using for each loops in conjunction with streams
-        for (Map.Entry<String, Set<Identifier>> tableNameToId : cacheToSave.entrySet()) {
-            String tableName = tableNameToId.getKey(); // extract out the table name for the set of ids
-            Set<Identifier> idSet = tableNameToId.getValue(); // get the set of ids
-            Stream<Identifier> idStream = idSet.stream().filter(dirtyFlags::contains);
-            idStream.forEach( // filter out the ids using stream filter
-                    id -> { // save the stream of ids needs a try catch in the lambda
-                        try {
-                            save(tableName, id);
-                        } catch (ResourceNotFoundException e) {
-                            MyLogger.logger.error("Tried saving an object that doesn't exist");
-                        }
-                        sf.removeCacheToSave(tableName, id);
-                    }
-            );
-        }
-
 
         // update All the new Objects using for each loops in conjunction with streams
         for(Map.Entry<String, Map<Identifier, Object>> tableNameToIdObjMap : cachedData.entrySet()) {
@@ -859,32 +925,15 @@ public class SessionImplementation implements Session {
     @Override
     public void writeAllCache(
             Map<String, Map<Identifier, Object>> cachedData,
-            Map<String, Set<Pair<Class<?>, Identifier>>> cacheToDelete,
-            Map<String, Set<Identifier>> cacheToSave) {
+            Map<String, Set<Pair<Class<?>, Identifier>>> cacheToDelete) {
 
         // the session factory used to add and remove things from cache marked as final to use in lambdas
         final SessionFactoryImplementation sf = (SessionFactoryImplementation) parent;
 
-        // Save All the new Objects using streams
-        cacheToSave.entrySet().stream().forEach( // for each of the table names to ids
-                entry -> { // take the element as a variable entry for the lambda
-                    final String tableName = entry.getKey(); // extract out the table name
-                    entry.getValue().stream().forEach( // for all the sets of ids
-                            id -> {                    // extract out the id
-                                try {                  // try catch block must be in lambda
-                                    save(tableName, id); // save the object
-                                } catch (ResourceNotFoundException e) {
-                                    MyLogger.logger.error("Tried saving an object that doesn't exist");
-                                }
-                                sf.removeCacheToSave(tableName, id); // remove it from the cache to be saved
-                            });
-                }
-        );
-
 
         // Update all the objects cached using lambdas
         // extract out the table name
-        // for each of the tablenames to maps of ids to objects
+        // for each of the table-names to maps of ids to objects
         cachedData.forEach((tableName, idObjMap) -> { // take the key/value pair as arguments
             idObjMap.forEach((id, value) -> {         // take the key/value pair as arguments
                 try {                                 // try catch block must be in lambda
@@ -898,8 +947,8 @@ public class SessionImplementation implements Session {
         // Delete all the objects to be deleted using lambdas
         // get the table name of the pairs
         // for each entry in the map of tables to sets
-        cacheToDelete.forEach((tableName, setCalssId) -> {  // take the key/value pair as arguments
-            setCalssId.forEach(                             // for each pair of class, Ids in the set
+        cacheToDelete.forEach((tableName, setClassId) -> {  // take the key/value pair as arguments
+            setClassId.forEach(                             // for each pair of class, Ids in the set
                     classID -> {                            // take the class,id pair as an entry
                         delete(classID.getKey(), classID.getValue()); // delete the pair
                         sf.removeCacheToDelete(tableName, classID.getValue()); // remove the object from the cache to be deleted

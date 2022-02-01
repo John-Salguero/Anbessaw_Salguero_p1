@@ -12,14 +12,18 @@ import com.salanb.orm.session.SessionFactory;
 import com.salanb.orm.session.SessionFactoryImplementation;
 import com.salanb.orm.session.Transaction;
 import com.salanb.orm.utillities.Identifier;
+import com.salanb.orm.utillities.ResourceNotFoundException;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -91,13 +95,42 @@ public class App {
      * @param name - the name of the session factory if one is not provided it defaults to the nameless one
      * @return - A Session object that can be used for transactions
      */
-    public Session getNewSession(String name) throws ParserConfigurationException {
+    public Session getNewSession(String name) {
         if(!sessionFactories.containsKey("")){
             MyLogger.logger.error("Trying to get a session from an unconfigured factory");
-            throw new ParserConfigurationException("Trying to get a session from an unconfigured factory");
+            throw new RuntimeException("Trying to get a session from an unconfigured factory");
         }
 
         return sessionFactories.get(name).getSession();
+    }
+
+    /**
+     * Given an object returns the identifier of the default factory
+     * @param pojo The object which needs to get the id
+     * @return the primary/composite key of the object
+     */
+    public Identifier getId(Object pojo) {
+        if(!sessionFactories.containsKey("")){
+            MyLogger.logger.error("Trying to get a session from an unconfigured factory");
+            throw new RuntimeException("Trying to get a session from an unconfigured factory");
+        }
+
+        return sessionFactories.get("").getId(pojo);
+    }
+
+    /**
+     * Given an object and factory name returns the identifier of the named factory
+     * @param pojo The object which needs to get the id
+     * @param name The name of the factory to retrieve the id from
+     * @return the primary/composite key of the object
+     */
+    public Identifier getId(Object pojo, String name) {
+        if(!sessionFactories.containsKey(name)){
+            MyLogger.logger.error("Trying to get a session from an unconfigured factory");
+            throw new RuntimeException("Trying to get a session from an unconfigured factory");
+        }
+
+        return sessionFactories.get(name).getId(pojo);
     }
 
 
@@ -116,12 +149,7 @@ public class App {
             e.printStackTrace();
         }
         Transaction transaction = session.getTransaction();
-        Movie m = new Movie(3, "Iron Man", new BigDecimal(2.5), true, 0);
-        m = (Movie)transaction.get(m);
-        m.setDirectorId(8);
-        Identifier id = transaction.update(m);
-        System.out.println(transaction.get(m.getClass(), id));
-        m.setPrice(new BigDecimal(7.5));
+
 
         UserContent u = new UserContent();
         u.setUsername("humongous.situation3362");
@@ -130,8 +158,13 @@ public class App {
 
         UserAccounts ua = new UserAccounts();
         ua.setUsername("John.Salguero");
-        ua.setAccountId("9946472ebddf2c59b39a100872fcee851e0a498b70030f71f4c9d49fb0b9933a");
-        ua = (UserAccounts) transaction.get(ua);
+        ua.setAccountId("9946472ebddf2c59b39a100872fcee852e0a498b70030f71f4c9d49fb0b9933a");
+
+        try {
+            ua = (UserAccounts) transaction.update(ua);
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+        }
         System.out.println(ua);
 
         transaction.close();

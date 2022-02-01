@@ -16,6 +16,17 @@ public class Movie {
     public Movie() {
     }
 
+    // Copy Constructor
+    public Movie(Movie m) {
+        this.id = m.id;
+        this.title = m.title;
+        this.price = m.price;
+        this.available = m.available;
+        this.returnDate = m.returnDate;
+        this.returnDate = m.returnDate;
+        this.directorId = m.directorId;
+    }
+
     // Full argument constructor
     public Movie(int id, String title, BigDecimal price, boolean available, long returnDate) {
         this.id = id;

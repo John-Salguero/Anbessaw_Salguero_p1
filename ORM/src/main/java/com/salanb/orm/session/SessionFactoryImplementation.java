@@ -29,7 +29,6 @@ public class SessionFactoryImplementation implements SessionFactory {
     private final Map<Class<?>, List<GeneratorType>> generationType;
     private final Map<String, Map<Identifier, Object>> cachedData;
     private final Map<String, Set<Pair<Class<?>, Identifier>>> cacheToDelete;
-    private final Map<String, Set<Identifier>> cacheToSave;
 
     // information used for connecting to the database
     private final String driver;
@@ -59,7 +58,6 @@ public class SessionFactoryImplementation implements SessionFactory {
         // the first layer of cached data does not, second layer does
         cachedData = new HashMap<>();
         cacheToDelete = new ConcurrentHashMap<>();
-        cacheToSave = new ConcurrentHashMap<>();
 
 
         // Instantiate the DocumentBuilderFactory Factory
@@ -95,7 +93,7 @@ public class SessionFactoryImplementation implements SessionFactory {
                     // If the table name is not provided, assume the name of the table
                     if(tableName.equals(""))
                         tableName = Class.forName(className).getSimpleName();
-                    Class clazz = Class.forName(className);
+                    Class<?> clazz = Class.forName(className);
 
                     // initialize the maps for class and table data
                     fieldMaps.put(clazz, new HashMap<>());
@@ -106,7 +104,6 @@ public class SessionFactoryImplementation implements SessionFactory {
                     // the second layer of the cached data needs to be thread safe
                     cachedData.put(tableName, new ConcurrentHashMap<>());
                     cacheToDelete.put(tableName, new HashSet<>());
-                    cacheToSave.put(tableName, new HashSet<>());
 
 
 
@@ -127,7 +124,6 @@ public class SessionFactoryImplementation implements SessionFactory {
                         primaryKeys.get(clazz).add(fieldName);
 
                         NodeList generators = id.getElementsByTagName("generator");
-                        Element generator = null;
                         if(generators.getLength() > 1) {
                             String msg = "More than one generator specified for id.";
                             MyLogger.logger.error(msg);
@@ -189,7 +185,7 @@ public class SessionFactoryImplementation implements SessionFactory {
     }
 
     /**
-     * Gets the Map of class fields to table names
+     * Gets the Map of class fields to table column names
      * @return a map where the class can be used to get to a map where the fields of the class
      * key to the names of columns on the table
      */
@@ -208,7 +204,7 @@ public class SessionFactoryImplementation implements SessionFactory {
     }
 
     /**
-     * Returns a map where the tableName keys for a map of the name of columns and their typs
+     * Returns a map where the tableName keys for a map of the name of columns and their type
      * @return a map where the tableName keys for a map of the name of columns and their type
      */
     @Override
@@ -241,15 +237,14 @@ public class SessionFactoryImplementation implements SessionFactory {
     @Override
     public Identifier getId(Object pojo) {
 
-        Class clazz = pojo.getClass();
+        Class<?> clazz = pojo.getClass();
         List<String> fieldList = primaryKeys.get(clazz);
         Identifier retVal = new IdentifierImplementation();
         try {
             for(String field : fieldList){
                 Field accessField = clazz.getDeclaredField(field);
                 accessField.setAccessible(true);
-                if(!retVal.add(accessField.get(pojo)))
-                    throw new InputMismatchException("Primary key can not be null.");
+                retVal.add(accessField.get(pojo));
             }
         } catch (NoSuchFieldException e) {
             String msg = "Class was incorrectly mapped, no such field";
@@ -265,20 +260,7 @@ public class SessionFactoryImplementation implements SessionFactory {
     }
 
     /**
-     * Given a tableName, id, and an object - adds that object to the cache of data saved
-     * from them Database to reduce making calls to the database
-     * @param tableName - the name of the table the data is coming from
-     * @param id - primary or composite key
-     * @param pojo - the object being stored
-     * @return If successful returns the object being stored
-     */
-    Object addToCachedData(String tableName, Identifier id, Object pojo) {
-        cachedData.get(tableName).put(id, pojo);
-        return cachedData.get(tableName).get(id);
-    }
-
-    /**
-     * Given a well formed object, add the object to the cached data
+     * Given a well-formed object, add the object to the cached data
      * @param pojo - the object being stored
      * @return If successful returns the object being stored
      */
@@ -286,8 +268,18 @@ public class SessionFactoryImplementation implements SessionFactory {
         String tableName = tableMaps.get(pojo.getClass());
         Identifier id = getId(pojo);
 
-        cachedData.get(tableName).put(id, pojo);
-        return cachedData.get(tableName).get(id);
+         Object newPojo;
+         try {
+             newPojo = pojo.getClass().newInstance();
+             DeepCopy(newPojo, pojo);
+         } catch (InstantiationException | IllegalAccessException e) {
+             String msg = "Could not deep copy the provided Pojo";
+             MyLogger.logger.fatal(msg);
+             throw new RuntimeException(msg);
+         }
+
+        cachedData.get(tableName).put(id, newPojo);
+        return newPojo;
     }
 
     /**
@@ -297,6 +289,19 @@ public class SessionFactoryImplementation implements SessionFactory {
      * @return The object that was successfully removed from cached data
      */
     Object removeFromCachedData(String tableName, Identifier id) {
+        return cachedData.get(tableName).remove(id);
+    }
+
+    /**
+     * Given an object, removes the object from cached data
+     * @param pojo - the object to remove from cache
+     * @return The object that was successfully removed from cached data
+     */
+    Object removeFromCachedData(Object pojo) {
+        Class<?> clazz = pojo.getClass();
+        String tableName = tableMaps.get(clazz);
+        Identifier id = getId(pojo);
+
         return cachedData.get(tableName).remove(id);
     }
 
@@ -315,13 +320,26 @@ public class SessionFactoryImplementation implements SessionFactory {
      * @param pojo - the object to check
      * @return true if the object is set to be deleted
      */
-    boolean hasCachedToDelete(Object pojo) {
+    boolean isCachedToDelete(Object pojo) {
 
         Class<?> clazz = pojo.getClass();
         String tableName = tableMaps.get(clazz);
         Identifier id = getId(pojo);
         return cacheToDelete.get(tableName).
                 contains(new Pair<Class<?>, Identifier>(clazz, id));
+    }
+
+    /**
+     * given an object, determine if it is cached
+     * @param pojo - the object to check
+     * @return true if the object is in the cache data
+     */
+    boolean isCachedData(Object pojo) {
+
+        Class<?> clazz = pojo.getClass();
+        String tableName = tableMaps.get(clazz);
+        Identifier id = getId(pojo);
+        return cachedData.get(tableName).containsKey(id);
     }
 
     /**
@@ -338,23 +356,17 @@ public class SessionFactoryImplementation implements SessionFactory {
         removeFromCachedData(tableName, id);
         cacheToDelete.get(tableName).add(new Pair<>(pojo.getClass(), id));
 
-        return pojo;
-    }
+        Object deletedPojo;
+        try {
+            deletedPojo = pojo.getClass().newInstance();
+            DeepCopy(deletedPojo, pojo);
+        } catch (InstantiationException | IllegalAccessException e) {
+            String msg = "Could not deep copy the provided Pojo";
+            MyLogger.logger.fatal(msg);
+            throw new RuntimeException(msg);
+        }
 
-    /**
-     * given a tableName and an id, sets that object to be saved
-     * @param tableName - the table name where the object belongs
-     * @param id - the object's primary/composite key
-     * @return The object that was successfully added to be saved
-     */
-    synchronized Object addCachedToSave(String tableName, Identifier id) {
-
-        Object pojo = cachedData.get(tableName).get(id);
-        if(pojo == null)
-            return null;
-        cacheToSave.get(tableName).add(id);
-
-        return pojo;
+        return deletedPojo;
     }
 
     /**
@@ -368,19 +380,6 @@ public class SessionFactoryImplementation implements SessionFactory {
         Identifier id = getId(pojo);
 
         return  addCachedToDelete(tableName, id);
-    }
-
-    /**
-     * given an object, sets that object to be saved
-     * @param pojo - Object to be saved
-     * @return The object that was successfully added to be saved
-     */
-    synchronized Object addCachedToSave(Object pojo) {
-
-        String tableName = tableMaps.get(pojo.getClass());
-        Identifier id = getId(pojo);
-
-        return  addCachedToSave(tableName, id);
     }
 
     /**
@@ -409,30 +408,6 @@ public class SessionFactoryImplementation implements SessionFactory {
     }
 
     /**
-     * given a tableName and an id, removes that object to be saved
-     * @param tableName - the table name where the object belongs
-     * @param id - the object's primary/composite key
-     * @return True if the object was successfully removed
-     */
-    synchronized boolean removeCacheToSave(String tableName, Identifier id) {
-
-        return cacheToSave.get(tableName).remove(id);
-    }
-
-    /**
-     * given an object check if it is cached to be saved
-     * @param pojo - The object to check if it is in the cache to save
-     * @return True if the object was successfully removed
-     */
-    synchronized boolean hasCacheToSave(Object pojo) {
-
-        String tableName = tableMaps.get(pojo.getClass());
-        Identifier id = getId(pojo);
-
-        return cacheToSave.get(tableName).contains(id);
-    }
-
-    /**
      * Retrieve the data cached
      * @return The cached repo
      */
@@ -449,10 +424,24 @@ public class SessionFactoryImplementation implements SessionFactory {
     }
 
     /**
-     * Retrieve the data to save
-     * @return the data yet to be saved
+     * Given two objects of the same type, uses reflection to copy the mapped fields
+     * @param newPOJO The pojo to become a copy
+     * @param pojo The pojo being copied
      */
-    public Map<String, Set<Identifier>> getCacheToSave() {
-        return cacheToSave;
+    private void DeepCopy(Object newPOJO, Object pojo) throws IllegalAccessException {
+
+        // The class of the objects
+        Class<?> clazz = newPOJO.getClass();
+        // A map of the object's field names to the database's table column names
+        Map<String, String> fieldToNamesMap = fieldMaps.get(clazz);
+
+
+        for(Field field : clazz.getDeclaredFields()) {
+            String columnName = fieldToNamesMap.get(field.getName());
+            if (columnName != null) { // if the field has been mapped to the table
+                field.setAccessible(true);
+                field.set(newPOJO, field.get(pojo));
+            }
+        }
     }
 }
