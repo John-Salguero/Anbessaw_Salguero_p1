@@ -1,4 +1,4 @@
-package com.salanb.orm.models;
+package com.salanb.webapp.models;
 
 public class UserAccounts {
     String username;

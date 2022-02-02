@@ -5,16 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a254988-50cc-41e5-9dfe-8c5e6d6a5d13" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/utillities/Pair.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../WebApp/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../WebApp/src/main/java/com/salanb/webapp/servlets/MainServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Session.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Transaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/utillities/IdentifierImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/utillities/IdentifierImplementation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/models/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/../WebApp/src/main/java/com/salanb/webapp/models/Movie.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/models/UserAccounts.java" beforeDir="false" afterPath="$PROJECT_DIR$/../WebApp/src/main/java/com/salanb/webapp/models/UserAccounts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/models/UserContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../WebApp/src/main/java/com/salanb/webapp/models/UserContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Movie.salanb.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../WebApp/src/main/resources/Movie.salanb.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/UserAccount.salanb.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../WebApp/src/main/resources/UserAccount.salanb.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/test/session/SessionFactoryImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/session/SessionFactoryImplementationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WebApp/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../WebApp/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WebApp/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../WebApp/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WebApp/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../WebApp/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../WebApp/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../WebApp/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +57,7 @@
       <command value="mvn jar:jar" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.App">
+  <component name="RunManager" selected="JUnit.Unit Tests">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.salanb.orm.App" />
       <module name="salanb_orm" />
@@ -84,13 +88,13 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.Unit Tests" />
       <item itemvalue="Application.App" />
+      <item itemvalue="JUnit.Unit Tests" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.App" />
         <item itemvalue="JUnit.Unit Tests" />
+        <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
   </component>

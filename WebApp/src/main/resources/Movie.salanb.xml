@@ -2,7 +2,7 @@
 <!DOCTYPE salanb-mapping SYSTEM
         "http://johnsalguero.com/dtd/salanb-mapping-0.1.dtd">
 <salanb-mapping>
-    <class name = "com.salanb.orm.models.Movie" table = "movies">
+    <class name = "com.salanb.webapp.models.Movie" table = "movies">
 
         <meta attribute = "class-description">
             This class contains the movie detail.
@@ -20,7 +20,7 @@
         <property name = "genre_id" column = "genre_id" type = "integer"/>
 
     </class>
-    <class name = "com.salanb.orm.models.UserContent" table = "User_Data">
+    <class name = "com.salanb.webapp.models.UserContent" table = "User_Data">
 
         <meta attribute = "class-description">
             This class contains the user details.

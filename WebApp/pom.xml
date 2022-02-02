@@ -19,18 +19,20 @@
     <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
 
-  <repositories>
-    <!-- In Project repository -->
-    <repository>
-      <id>org.dslsnb.orm</id>
-      <name>salanb_orm</name>
-      <url>file://${project.basedir}/libs</url>
-    </repository>
-
-
-  </repositories>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>5.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.6</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/junit/junit -->
     <dependency>
       <groupId>junit</groupId>
@@ -64,10 +66,16 @@
       <artifactId>postgresql</artifactId>
       <version>42.3.1</version>
     </dependency>
+    <!-- The package we made -->
+    <dependency>
+      <groupId>org.salanb.orm</groupId>
+      <artifactId>salanb_orm</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>
-    <finalName>untitled</finalName>
+    <finalName>SalAnbToyStore</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>

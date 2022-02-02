@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="SalAnb_WebApp" />
+        <module name="salanb_webapp" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SalAnb_WebApp" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
