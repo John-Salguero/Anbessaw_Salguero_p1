@@ -1,4 +1,4 @@
-package com.salanb.orm.models;
+package testmodels;
 
 public class UserAccounts {
     String username;

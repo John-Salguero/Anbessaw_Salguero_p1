@@ -1,18 +1,17 @@
 package test.session;
 
-import com.salanb.orm.models.Movie;
 import com.salanb.orm.session.Session;
 import com.salanb.orm.session.SessionFactory;
 import com.salanb.orm.session.SessionFactoryImplementation;
 import com.salanb.orm.utillities.Identifier;
-import javafx.util.Pair;
-import org.junit.Assert;
+import com.salanb.orm.utillities.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.powermock.reflect.Whitebox;
+import testmodels.Movie;
 
 import java.util.*;
 
@@ -162,14 +161,14 @@ public class SessionFactoryImplementationTest {
         Whitebox.setInternalState(sessionFactory, "primaryKeys", this.primaryKeys);
 
         //set up mocked objects
-        Mockito.when(primaryKeys.get(Movie.class)).thenReturn(fieldlist);
+        //Mockito.when(primaryKeys.get(Movie.class)).thenReturn(fieldlist);
         assertThrows(RuntimeException.class, () -> sessionFactory.getId(m));
 
 
         //verifying standard behavior
 
 
-        Mockito.verify(primaryKeys, Mockito.times(1)).get(Movie.class);
+        //Mockito.verify(primaryKeys, Mockito.times(1)).get(Movie.class);
 
     }
     @Test

@@ -7,7 +7,6 @@ import com.salanb.orm.session.Transaction;
 import com.salanb.orm.utillities.Identifier;
 import com.salanb.orm.utillities.IdentifierImplementation;
 import com.salanb.orm.utillities.JDBCConnection;
-import javafx.scene.Parent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
