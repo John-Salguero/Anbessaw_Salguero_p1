@@ -5,7 +5,8 @@ import com.salanb.orm.configuration.Configuration;
 import com.salanb.orm.logging.MyLogger;
 import com.salanb.orm.utillities.Identifier;
 import com.salanb.orm.utillities.IdentifierImplementation;
-import javafx.util.Pair;
+import com.salanb.orm.utillities.Pair;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -181,6 +182,8 @@ public class SessionFactoryImplementation implements SessionFactory {
      */
     @Override
     public void close() {
+        MyLogger.logger.info("Closing the application");
+        MyLogger.logger.info("Writing cache to Database");
         getSession().writeAllCache(cachedData, cacheToDelete);
     }
 
@@ -312,7 +315,48 @@ public class SessionFactoryImplementation implements SessionFactory {
      * @return - the object, if it's in the cache
      */
     Object getFromCachedData(String tableName, Identifier id) {
-        return cachedData.get(tableName).get(id);
+
+        Object retrievedPojo = cachedData.get(tableName).get(id);
+        if(retrievedPojo == null)
+            return null;
+
+        Object returnedPojo;
+        try {
+            returnedPojo = retrievedPojo.getClass().newInstance();
+            DeepCopy(returnedPojo, retrievedPojo);
+        } catch (InstantiationException | IllegalAccessException e) {
+            String msg = "Could not deep copy the provided Pojo";
+            MyLogger.logger.fatal(msg);
+            throw new RuntimeException(msg);
+        }
+
+        return returnedPojo;
+    }
+
+    /**
+     * Given a pojo fetches data from the cache
+     * @param pojo - The item to fetch
+     * @return - the object, if it's in the cache
+     */
+    Object getFromCachedData(Object pojo) {
+
+        String tableName = tableMaps.get(pojo.getClass());
+        Identifier id = getId(pojo);
+
+        Object retrievedPojo = cachedData.get(tableName).get(id);
+        Object returnedPojo;
+        if(retrievedPojo == null)
+            return null;
+        try {
+            returnedPojo = retrievedPojo.getClass().newInstance();
+            DeepCopy(returnedPojo, retrievedPojo);
+        } catch (InstantiationException | IllegalAccessException e) {
+            String msg = "Could not deep copy the provided Pojo";
+            MyLogger.logger.fatal(msg);
+            throw new RuntimeException(msg);
+        }
+
+        return returnedPojo;
     }
 
     /**

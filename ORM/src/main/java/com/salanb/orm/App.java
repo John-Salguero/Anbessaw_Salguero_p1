@@ -149,4 +149,15 @@ public class App {
         }
 
     }
+
+    /**
+     * Used to close down the app in an expected manner - writes the cached data to the database
+     */
+    public void close() {
+
+        for(Map.Entry<String, SessionFactory> factorySet: sessionFactories.entrySet()) {
+            factorySet.getValue().close();
+        }
+
+    }
 }

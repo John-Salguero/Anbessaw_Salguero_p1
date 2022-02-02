@@ -2,7 +2,7 @@ package com.salanb.orm.session;
 
 import com.salanb.orm.utillities.Identifier;
 import com.salanb.orm.utillities.JDBCConnection;
-import javafx.util.Pair;
+import com.salanb.orm.utillities.Pair;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +22,6 @@ public interface Session {
     Transaction getTransaction();
     void setDirtyFlag(Identifier key);
     JDBCConnection getConnection();
-    List<Object> getTableFromRepo(Class<?> clazz);
+    <T> List<T> getTableFromRepo(Class<T> clazz);
     boolean isInvalid();
 }

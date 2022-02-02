@@ -27,7 +27,7 @@ public class Transaction {
      * @return - The identifier of that object
      * @throws IllegalStateException Throws when trying to save an object already in the database
      */
-    public Object save(Object pojo) throws IllegalStateException {
+    public <T> T save(T pojo) throws IllegalStateException {
 
         if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
@@ -38,7 +38,7 @@ public class Transaction {
         populateGeneratedIds(pojo);
 
         // Save the object to the database since the Database could decide how to assign values
-        return ((SessionImplementation)parent).save(pojo);
+        return (T)((SessionImplementation)parent).save(pojo);
     }
 
 
@@ -77,17 +77,17 @@ public class Transaction {
      * @param pojo - the object to be updated
      * @return - The identifier of that object
      */
-    public Object update(Object pojo) throws ResourceNotFoundException {
+    public <T> T update(T pojo) throws ResourceNotFoundException {
 
         if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
 
-        Object oldPOJO = get(pojo);
+        T oldPOJO = get(pojo);
         if(oldPOJO == null)
             throw new ResourceNotFoundException("The object can not be found in the Database");
 
         SessionFactoryImplementation sf = (SessionFactoryImplementation) parent.getParent();
-        Object newPOJO = sf.addToCachedData(pojo);
+        T newPOJO = (T)sf.addToCachedData(pojo);
 
         Identifier id = sf.getId(newPOJO);
 
@@ -102,7 +102,7 @@ public class Transaction {
      * @param pojo - The object to be Deleted
      * @return -
      */
-    public Object delete(Object pojo){
+    public <T> T delete(T pojo){
 
         if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
@@ -112,7 +112,7 @@ public class Transaction {
         Identifier id = sf.getId(pojo);
         String tableName = sf.getTableMaps().get(pojo.getClass());
         if(sf.isCachedToDelete(pojo))
-            return id;
+            return pojo;
         sf.addCachedToDelete(tableName, id);
         sf.removeFromCachedData(tableName, id);
 
@@ -128,12 +128,12 @@ public class Transaction {
      * @param id - the primary/composite key of the object
      * @return The object populated with information from the database
      */
-    public Object get(Class<?> clazz, Identifier id){
+    public <T> T get(Class<T> clazz, Identifier id){
 
         if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
 
-        return ((SessionImplementation)parent).getObjectFromRepo(clazz, id);
+        return (T)((SessionImplementation)parent).getObjectFromRepo(clazz, id);
     }
 
     /**
@@ -141,7 +141,7 @@ public class Transaction {
      * @param clazz - The class of the object
      * @return The object populated with information from the database
      */
-    public List<Object> getTable(Class<?> clazz){
+    public <T> List<T> getTable(Class<T> clazz){
 
         if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
@@ -154,12 +154,12 @@ public class Transaction {
      * @param pojo - The object related to the table
      * @return The object populated with information from the database
      */
-    public List<Object> getTable(Object pojo){
+    public <T> List<T> getTable(T pojo){
 
         if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
 
-        return parent.getTableFromRepo(pojo.getClass());
+        return parent.getTableFromRepo((Class<T>)pojo.getClass());
     }
 
     /**
@@ -168,7 +168,7 @@ public class Transaction {
      * @param pojo The object to be populated with data from the repo
      * @return - the object populated with data from the repo
      */
-    public Object get(Object pojo){
+    public <T> T get(T pojo){
 
         if(parent.isInvalid())
             throw new IllegalStateException("This session has closed.");
@@ -182,7 +182,7 @@ public class Transaction {
         Identifier id = sf.getId(pojo);
         Class<?> clazz = pojo.getClass();
 
-        return ((SessionImplementation)parent).getObjectFromRepo(clazz, id);
+        return (T)((SessionImplementation)parent).getObjectFromRepo(clazz, id);
     }
 
     /**
