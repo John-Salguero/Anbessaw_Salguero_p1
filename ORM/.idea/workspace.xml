@@ -4,20 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a254988-50cc-41e5-9dfe-8c5e6d6a5d13" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/test/app/AppTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../WebApp/SalAnb_WebApp.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="7186b999-adcf-46bf-ab4a-8c9eeb2a77f3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/Configuration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/ConfigurationFactoryImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/configuration/ConfigurationFactoryImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Session.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/SessionImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/orm/session/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/test/app/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/app/AppTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/test/session/SessionFactoryImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/session/SessionFactoryImplementationTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/test/session/SessionImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/session/SessionImplementationTest.java" afterDir="false" />
     </list>
@@ -40,7 +29,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="24Tfq1mEPN30UIN53yQjvQBp3JS" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -64,8 +53,7 @@
     </key>
   </component>
   <component name="RunManager" selected="JUnit.Unit Tests">
-    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.salanb.orm.App" />
+    <configuration name="AppTest.getInstance" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="salanb_orm" />
       <extension name="coverage">
         <pattern>
@@ -73,21 +61,9 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SessionFactoryImplementationTest.getFieldMaps" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="salanb_orm" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="test.session.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="test.session" />
-      <option name="MAIN_CLASS_NAME" value="test.session.SessionFactoryImplementationTest" />
-      <option name="METHOD_NAME" value="getFieldMaps" />
+      <option name="PACKAGE_NAME" value="test.app" />
+      <option name="MAIN_CLASS_NAME" value="test.app.AppTest" />
+      <option name="METHOD_NAME" value="getInstance" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -125,6 +101,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SessionImplementationTest.setDirtyFlag_Happy" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="salanb_orm" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.session.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test.session" />
+      <option name="MAIN_CLASS_NAME" value="test.session.SessionImplementationTest" />
+      <option name="METHOD_NAME" value="setDirtyFlag_Happy" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Unit Tests" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="salanb_orm" />
       <extension name="coverage">
@@ -142,26 +134,26 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.App" />
       <item itemvalue="JUnit.Unit Tests" />
-      <item itemvalue="JUnit.SessionFactoryImplementationTest.getFieldMaps" />
       <item itemvalue="JUnit.SessionFactoryImplementationTest.getTableMaps" />
       <item itemvalue="JUnit.SessionImplementationTest.getConnection" />
+      <item itemvalue="JUnit.SessionImplementationTest.setDirtyFlag_Happy" />
+      <item itemvalue="JUnit.AppTest.getInstance" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.Unit Tests" />
+        <item itemvalue="JUnit.AppTest.getInstance" />
+        <item itemvalue="JUnit.SessionImplementationTest.setDirtyFlag_Happy" />
         <item itemvalue="JUnit.SessionImplementationTest.getConnection" />
         <item itemvalue="JUnit.SessionFactoryImplementationTest.getTableMaps" />
-        <item itemvalue="JUnit.SessionFactoryImplementationTest.getFieldMaps" />
-        <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="4a254988-50cc-41e5-9dfe-8c5e6d6a5d13" name="Changes" comment="" />
+      <changelist id="7186b999-adcf-46bf-ab4a-8c9eeb2a77f3" name="Changes" comment="" />
       <created>1643659686237</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -192,20 +184,26 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$UnitTests.ic" NAME="UnitTests Coverage Results" MODIFIED="1643521607576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$SessionFactoryImplementationTest_getTableMaps.ic" NAME="SessionFactoryImplementationTest.getTableMaps Coverage Results" MODIFIED="1643742319617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>test.session.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$Unit_Tests.ic" NAME="Unit Tests Coverage Results" MODIFIED="1643744945432" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/salanb_orm$AppTest_getInstance.ic" NAME="AppTest.getInstance Coverage Results" MODIFIED="1643783604122" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>test.app.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$ConfigurationUnitTest.ic" NAME="ConfigurationUnitTest Coverage Results" MODIFIED="1643411100918" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$SessionFactoryImplementationTest_getId_Happy.ic" NAME="SessionFactoryImplementationTest.getId_Happy Coverage Results" MODIFIED="1643665951800" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>test.session.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$SessionImplementationTest_getConnection.ic" NAME="SessionImplementationTest.getConnection Coverage Results" MODIFIED="1643744899212" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>test.session.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$Unit_Tests.ic" NAME="Unit Tests Coverage Results" MODIFIED="1643667591202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>com.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$ConfigurationUnitTest.ic" NAME="ConfigurationUnitTest Coverage Results" MODIFIED="1643411100918" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>com.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$UnitTests.ic" NAME="UnitTests Coverage Results" MODIFIED="1643521607576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>com.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$SessionFactoryImplementationTest_getFieldMaps.ic" NAME="SessionFactoryImplementationTest.getFieldMaps Coverage Results" MODIFIED="1643738152921" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>test.session.*</FILTER>
@@ -213,7 +211,10 @@
     <SUITE FILE_PATH="coverage/salanb_orm$App.ic" NAME="App Coverage Results" MODIFIED="1643691978747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.salanb.orm.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/Anbessaw_Salguero_ORM$SessionFactoryImplementationTest_getTableMaps.ic" NAME="SessionFactoryImplementationTest.getTableMaps Coverage Results" MODIFIED="1643742319617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/salanb_orm$Unit_Tests.ic" NAME="Unit Tests Coverage Results" MODIFIED="1643783645202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/salanb_orm$SessionImplementationTest_setDirtyFlag_Happy.ic" NAME="SessionImplementationTest.setDirtyFlag_Happy Coverage Results" MODIFIED="1643758718591" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>test.session.*</FILTER>
     </SUITE>
   </component>

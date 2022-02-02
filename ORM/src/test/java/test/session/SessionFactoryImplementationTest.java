@@ -5,6 +5,7 @@ import com.salanb.orm.session.Session;
 import com.salanb.orm.session.SessionFactory;
 import com.salanb.orm.session.SessionFactoryImplementation;
 import com.salanb.orm.utillities.Identifier;
+import javafx.util.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +41,12 @@ public class SessionFactoryImplementationTest {
 
     @Mock
     private Map<Class, List<String>> primaryKeys;
+
+    @Mock
+    private Map<String, Map<Identifier, Object>> getCachedData;
+
+    @Mock
+    private Map<String, Set<Pair<Class<?>, Identifier>>> getCacheToDelete;
 
     @Test
     public void getSession_Happy() {
@@ -164,5 +171,20 @@ public class SessionFactoryImplementationTest {
 
         Mockito.verify(primaryKeys, Mockito.times(1)).get(Movie.class);
 
+    }
+    @Test
+    public void getCachedData() {
+        SessionFactoryImplementation sessionFactory = Whitebox.newInstance(SessionFactoryImplementation.class);
+        Whitebox.setInternalState(sessionFactory,"cachedData", getCachedData);
+        Map<String, Map<Identifier, Object>> session = sessionFactory.getCachedData();
+        assertNotNull(session);
+
+    }
+    @Test
+    public void getCacheToDelete() {
+        SessionFactoryImplementation sessionFactory = Whitebox.newInstance(SessionFactoryImplementation.class);
+        Whitebox.setInternalState(sessionFactory, "cacheToDelete", getCacheToDelete);
+        Map<String, Set<Pair<Class<?>, Identifier>>> session = sessionFactory.getCacheToDelete();
+        assertNotNull(session);
     }
 }
