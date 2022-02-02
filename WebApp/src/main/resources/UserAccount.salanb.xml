@@ -2,7 +2,7 @@
 <!DOCTYPE salanb-mapping SYSTEM
         "http://johnsalguero.com/dtd/salanb-mapping-0.1.dtd">
 <salanb-mapping>
-    <class name = "com.salanb.orm.models.UserAccounts" table = "User_Accounts">
+    <class name = "com.salanb.webapp.models.UserAccounts" table = "User_Accounts">
 
         <meta attribute = "class-description">
             This class contains the Junction Table Data.

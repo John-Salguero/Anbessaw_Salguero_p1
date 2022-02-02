@@ -18,9 +18,9 @@ public interface SessionFactory {
     Identifier getId(Object pojo);
 
     /**
-     * The way new id's are generated
+     * The way new ids are generated
      */
-    public enum GeneratorType {
+    enum GeneratorType {
         DEFINED,
         NATURAL,
         FRAMEWORK

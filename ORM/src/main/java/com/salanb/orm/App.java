@@ -8,7 +8,6 @@ import com.salanb.orm.session.Session;
 import com.salanb.orm.session.SessionFactory;
 import com.salanb.orm.session.SessionFactoryImplementation;
 import com.salanb.orm.utillities.Identifier;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -52,7 +51,10 @@ public class App {
         configs = factory.getConfigurations(FILENAME);
         sessionFactories = new HashMap<>();
         for(Map.Entry<String, Configuration> config : configs.entrySet()) {
-            sessionFactories.put(config.getKey(), new SessionFactoryImplementation(config.getValue()));
+            SessionFactoryImplementation sf = new SessionFactoryImplementation(config.getValue());
+            sessionFactories.put(config.getKey(), sf);
+            // register close as shutdown hook to write the cached data to the database
+            Runtime.getRuntime().addShutdownHook(new Thread(sf::close));
         }
 
         typeMaps = new HashMap<>();
@@ -62,7 +64,7 @@ public class App {
         typeMaps.put("big_decimal", BigDecimal.class);
         typeMaps.put("character", Character.class);
         typeMaps.put("string", String.class);
-        typeMaps.put("boolean", Bool.class);
+        typeMaps.put("boolean", Boolean.class);
         typeMaps.put("double", Double.class);
     }
 
@@ -144,6 +146,17 @@ public class App {
                 throw new RuntimeException(
                         "Syntax Error while retrieving configuration file path", e);
             }
+        }
+
+    }
+
+    /**
+     * Used to close down the app in an expected manner - writes the cached data to the database
+     */
+    public void close() {
+
+        for(Map.Entry<String, SessionFactory> factorySet: sessionFactories.entrySet()) {
+            factorySet.getValue().close();
         }
 
     }

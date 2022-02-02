@@ -4,7 +4,7 @@ import com.salanb.orm.logging.MyLogger;
 import com.salanb.orm.utillities.Identifier;
 import com.salanb.orm.utillities.JDBCConnection;
 import com.salanb.orm.utillities.ResourceNotFoundException;
-import javafx.util.Pair;
+import com.salanb.orm.utillities.Pair;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -228,9 +228,9 @@ public class SessionImplementation implements Session {
      * @return A list of all the objects of the mapped class
      */
     @Override
-    public List<Object> getTableFromRepo(Class<?> clazz) {
+    public <T> List<T> getTableFromRepo(Class<T> clazz) {
 
-        List<Object> retVal = new ArrayList<>();
+        List<T> retVal = new ArrayList<>();
         SessionFactoryImplementation sf = (SessionFactoryImplementation) getParent();
         Map<String, String> fieldToNamesMap = sf.getFieldMaps().get(clazz);
 
@@ -247,12 +247,16 @@ public class SessionImplementation implements Session {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Object pojo = buildObject(clazz, rs, fieldToNamesMap);
-                if (pojo != null) {
-                    if (!(sf.isCachedData(pojo)))
+                T retrievedPojo = buildObject(clazz, rs, fieldToNamesMap);
+                if (retrievedPojo != null) {
+                    Object cachedPojo = sf.getFromCachedData(retrievedPojo);
+                    if (cachedPojo == null) { // if it's not cached, cache it and return the cached version
                         ((SessionFactoryImplementation) getParent()).
-                                addToCachedData(pojo);
-                    retVal.add(pojo);
+                                addToCachedData(retrievedPojo);
+                        retVal.add(retrievedPojo);
+                    }
+                    else // if it's already cached, return the cached version
+                        retVal.add((T)cachedPojo);
                 }
             }
         }catch (SQLException e) {
@@ -718,10 +722,10 @@ public class SessionImplementation implements Session {
      * @param fieldToNamesMap - A Map of a class's fields to its table names
      * @return The new object constructed with the information
      */
-    private Object buildObject(Class<?> clazz, ResultSet rs, Map<String, String> fieldToNamesMap) {
+    private <T> T buildObject(Class<T> clazz, ResultSet rs, Map<String, String> fieldToNamesMap) {
 
         // construct the object and populate it with info
-        Object retVal;
+        T retVal;
         try {
             retVal = clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
