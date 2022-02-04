@@ -1,6 +1,7 @@
 package testmodels;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 // Model is deigned to represent Data that we want to maintain within our application
 public class Movie {
@@ -102,5 +103,13 @@ public class Movie {
                 ", returnDate=" + returnDate +
                 ", directorId=" + directorId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return id == movie.id && available == movie.available && returnDate == movie.returnDate && Objects.equals(title, movie.title) && Objects.equals(price, movie.price) && Objects.equals(directorId, movie.directorId);
     }
 }

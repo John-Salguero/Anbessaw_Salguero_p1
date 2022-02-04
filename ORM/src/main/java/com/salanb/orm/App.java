@@ -26,32 +26,24 @@ public class App {
     /**
      * This ensures the singleton Patter is used
      */
-    private static final App instance = new App();
+    private static App instance;
+
+    private final String FILENAME;
+    private final ConfigurationFactory factory;
+    private  final Map<String, Configuration> configs;
+    private final Map<String, SessionFactory> sessionFactories;
+    public final Map<String, Class<?>> typeMaps;
+
     /**
      * Making the default constructor private ensures the singleton pattern is used
      */
-    private App() {}
-    /**
-     * The method used to retrieve the instance
-     * @return - The instance of the App
-     */
-    public static App getInstance() {return instance;}
-
-    static private final String FILENAME;
-    static private final ConfigurationFactory factory;
-    static private  final Map<String, Configuration> configs;
-    static private final Map<String, SessionFactory> sessionFactories;
-    public static final Map<String, Class<?>> typeMaps;
-
-
-    // Static block that executes when the app is loaded into memory
-    static {
+    private App() {
         FILENAME = "SalAnb.cfg.xml";
         factory = ConfigurationFactoryImplementation.getInstance();
         configs = factory.getConfigurations(FILENAME);
         sessionFactories = new HashMap<>();
         for(Map.Entry<String, Configuration> config : configs.entrySet()) {
-            SessionFactoryImplementation sf = new SessionFactoryImplementation(config.getValue());
+            SessionFactory sf = new SessionFactoryImplementation(config.getValue());
             sessionFactories.put(config.getKey(), sf);
             // register close as shutdown hook to write the cached data to the database
             Runtime.getRuntime().addShutdownHook(new Thread(sf::close));
@@ -67,6 +59,16 @@ public class App {
         typeMaps.put("boolean", Boolean.class);
         typeMaps.put("double", Double.class);
     }
+    /**
+     * The method used to retrieve the instance
+     * @return - The instance of the App
+     */
+    public static App getInstance() {
+        if(instance == null)
+             instance = new App();
+        return instance;}
+
+
 
     /**
      * Returns a new session to be used to communicate with the database
@@ -142,9 +144,7 @@ public class App {
             try {
                 return new File(resource.toURI());
             } catch (URISyntaxException e) {
-                MyLogger.logger.error("Syntax Error while retrieving configuration file path");
-                throw new RuntimeException(
-                        "Syntax Error while retrieving configuration file path", e);
+                throw new RuntimeException("Syntax Error while retrieving configuration file path", e);
             }
         }
 
