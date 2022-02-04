@@ -18,29 +18,29 @@
             <property name="price" type="big_decimal" column="price"/>
             <property name="availability" type="boolean" column="availability"/>
         </class>
-        <class name="com.salanb.webapp.models.Transaction">
+        <class name="com.salanb.webapp.models.Transaction" table = "transaction">
             <id name="id" column="t_id" type="Integer">
                 <generator class="DEFINED"/>
             </id>
-            <id name = "id" column="c_id" type ="Integer">
+            <id name = "c_id" column="c_id" type ="Integer">
                 <generator class = "DEFINED"/>
             </id>
             <property name="date" type="Long" column="date"/>
         </class>
-    <class name="com.salanb.webapp.models.Cart">
-        <id name="id" column="p_id" type="Integer">
+    <class name="com.salanb.webapp.models.Cart" table="cart">
+        <id name="p_id" column="p_id" type="Integer">
             <generator class="DEFINED"/>
         </id>
-        <id name = "id" column="c_id" type ="Integer">
+        <id name = "c_id" column="c_id" type ="Integer">
             <generator class = "DEFINED"/>
         </id>
         <property name="amount" type="Integer" column="amount"/>
     </class>
-    <class name="com.salanb.webapp.models.Transaction_Product">
-        <id name="id" column="p_id" type="Integer">
+    <class name="com.salanb.webapp.models.Transaction_Product" table="transaction_product">
+        <id name="p_id" column="p_id" type="Integer">
             <generator class="DEFINED"/>
         </id>
-        <id name = "id" column="t_id" type ="Integer">
+        <id name = "t_id" column="t_id" type ="Integer">
             <generator class = "DEFINED"/>
         </id>
         <property name="amount" type="Integer" column="amount"/>

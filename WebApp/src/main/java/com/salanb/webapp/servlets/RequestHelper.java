@@ -3,7 +3,6 @@ package com.salanb.webapp.servlets;
 import com.google.gson.Gson;
 import com.salanb.orm.App;
 import com.salanb.orm.session.Transaction;
-import com.salanb.webapp.models.Movie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

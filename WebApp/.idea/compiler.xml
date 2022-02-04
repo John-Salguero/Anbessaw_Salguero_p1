@@ -12,6 +12,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="SalAnb_WebApp" target="8" />
+      <module name="WebApp" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
