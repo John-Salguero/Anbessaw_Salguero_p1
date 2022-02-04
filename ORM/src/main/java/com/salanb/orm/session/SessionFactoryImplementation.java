@@ -36,6 +36,7 @@ public class SessionFactoryImplementation implements SessionFactory {
     private final String url;
     private final String username;
     private final String password;
+    private final Session session;
     /**
      * Given a configuration object, construct the Session factory configured for
      * the ORM defined in the files
@@ -166,6 +167,7 @@ public class SessionFactoryImplementation implements SessionFactory {
             throw new RuntimeException("The Mapping data could not be loaded!", e);
         }
 
+        session = getSession();
     }
 
     /**
@@ -184,7 +186,7 @@ public class SessionFactoryImplementation implements SessionFactory {
     public void close() {
         MyLogger.logger.info("Closing the application");
         MyLogger.logger.info("Writing cache to Database");
-        getSession().writeAllCache(cachedData, cacheToDelete);
+        session.writeAllCache(cachedData, cacheToDelete);
     }
 
     /**
@@ -249,11 +251,7 @@ public class SessionFactoryImplementation implements SessionFactory {
                 accessField.setAccessible(true);
                 retVal.add(accessField.get(pojo));
             }
-        } catch (NoSuchFieldException e) {
-            String msg = "Class was incorrectly mapped, no such field";
-            MyLogger.logger.fatal(msg);
-            throw new RuntimeException(msg, e);
-        }catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | NoSuchFieldException e) {
             String msg = "Could not access the mapped field of the class" + clazz;
             MyLogger.logger.fatal(msg);
             throw new RuntimeException(msg, e);
@@ -282,7 +280,7 @@ public class SessionFactoryImplementation implements SessionFactory {
          }
 
         cachedData.get(tableName).put(id, newPojo);
-        return newPojo;
+        return pojo;
     }
 
     /**
@@ -296,25 +294,12 @@ public class SessionFactoryImplementation implements SessionFactory {
     }
 
     /**
-     * Given an object, removes the object from cached data
-     * @param pojo - the object to remove from cache
-     * @return The object that was successfully removed from cached data
-     */
-    Object removeFromCachedData(Object pojo) {
-        Class<?> clazz = pojo.getClass();
-        String tableName = tableMaps.get(clazz);
-        Identifier id = getId(pojo);
-
-        return cachedData.get(tableName).remove(id);
-    }
-
-    /**
      * Given a tableName and id fetches data from the cache
      * @param tableName - the table where the object belongs
      * @param id - the primary or composite key
      * @return - the object, if it's in the cache
      */
-    Object getFromCachedData(String tableName, Identifier id) {
+    protected Object getFromCachedData(String tableName, Identifier id) {
 
         Object retrievedPojo = cachedData.get(tableName).get(id);
         if(retrievedPojo == null)
@@ -400,17 +385,7 @@ public class SessionFactoryImplementation implements SessionFactory {
         removeFromCachedData(tableName, id);
         cacheToDelete.get(tableName).add(new Pair<>(pojo.getClass(), id));
 
-        Object deletedPojo;
-        try {
-            deletedPojo = pojo.getClass().newInstance();
-            DeepCopy(deletedPojo, pojo);
-        } catch (InstantiationException | IllegalAccessException e) {
-            String msg = "Could not deep copy the provided Pojo";
-            MyLogger.logger.fatal(msg);
-            throw new RuntimeException(msg);
-        }
-
-        return deletedPojo;
+        return pojo;
     }
 
     /**
