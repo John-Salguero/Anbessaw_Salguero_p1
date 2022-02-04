@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE salanb-mapping SYSTEM
+        "http://johnsalguero.com/dtd/salanb-mapping-0.1.dtd">
+<salanb-mapping>
+    <class name = "testmodels.UserContent">
+
+        <meta attribute = "class-description">
+            This class contains the user details.
+        </meta>
+
+        <id name = "username" type = "string" column = "Username">
+            <generator class="DEFINED"/>
+        </id>
+
+        <property name = "firstName" column = "First_Name" type = "string"/>
+        <property name = "lastName" column = "Last_Name" type = "string"/>
+        <property name = "phoneNumber" column = "Phone_Number" type = "string"/>
+        <property name = "emailAddress" column = "Email" type = "string"/>
+        <property name = "address" column = "Address_Line_1" type = "string"/>
+        <property name = "city" column = "Address_Line_2" type = "string"/>
+        <property name = "state" column = "State" type = "string"/>
+        <property name = "zipCode" column = "Zip_Code" type = "string"/>
+        <property name = "SSN_Hash" column = "SSN_Hash" type = "string"/>
+        <property name = "Pass_Hash" column = "Pass_Hash" type = "string"/>
+
+    </class>
+    <class name = "testmodels.TestPOJO" table = "testtable">
+
+        <meta attribute = "class-description">
+            This class contains the user details.
+        </meta>
+
+        <id name = "id" type = "integer" column = "id">
+            <generator class="NATURAL"/>
+        </id>
+
+        <property name = "int16" column = "int16" type = "short"/>
+        <property name = "int32" column = "int32" type = "integer"/>
+        <property name = "int64" column = "int64" type = "long"/>
+        <property name = "float64" column = "float64" type = "double"/>
+        <property name = "string" column = "string" type = "string"/>
+        <property name = "character" column = "character" type = "character"/>
+
+    </class>
+</salanb-mapping>

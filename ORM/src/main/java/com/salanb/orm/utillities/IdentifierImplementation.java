@@ -47,7 +47,7 @@ public class IdentifierImplementation extends LinkedList<Object> implements Iden
             }
             Class<?> clazz = elem.getClass();
             if (clazz == Integer.class || clazz == Long.class || clazz == Short.class ||
-                    clazz == BigDecimal.class || clazz == Character.class ||
+                    clazz == BigDecimal.class || clazz == Character.class || clazz == Double.class ||
                     clazz == String.class || clazz == Boolean.class){
                 Message[count++] = elem;
             }else {

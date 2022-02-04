@@ -48,7 +48,7 @@ public class Transaction {
      * it has id's that need to be generated
      * @param pojo The object to test
      */
-    private void objectCanBeSaved(Object pojo) throws IllegalStateException {
+    private boolean objectCanBeSaved(Object pojo) throws IllegalStateException {
 
         SessionFactoryImplementation sf = (SessionFactoryImplementation) parent.getParent();
 
@@ -60,6 +60,7 @@ public class Transaction {
                 if(type == SessionFactory.GeneratorType.DEFINED)
                     continue;
                 isPureDefined = false;
+                break;
             }
 
             if(isPureDefined) { // the item is purely defined, and is already in the database - cannot save it
@@ -68,6 +69,7 @@ public class Transaction {
                 throw new IllegalStateException(msg);
             }
         }
+        return true;
     }
 
     /**
@@ -237,9 +239,7 @@ public class Transaction {
                                 try {
                                     field.set(pojo, value);
                                 } catch (IllegalAccessException e) {
-                                    String msg = "Failed accessing a field; This shouldn't be possible";
-                                    MyLogger.logger.fatal(msg);
-                                    throw new RuntimeException(msg);
+                                    throw new RuntimeException("Failed accessing a field; This shouldn't be possible");
                                 }
                         }
                         if(primIt.hasNext()) { // if we have more id's to check for

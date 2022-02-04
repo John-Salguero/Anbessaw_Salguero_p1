@@ -1,5 +1,6 @@
 package com.salanb.orm.session;
 
+import com.salanb.orm.App;
 import com.salanb.orm.logging.MyLogger;
 import com.salanb.orm.utillities.Identifier;
 import com.salanb.orm.utillities.JDBCConnection;
@@ -35,7 +36,7 @@ public class SessionImplementation implements Session {
      * @param username - the username used to connect to the Database
      * @param password - the password used to connect to the Database
      */
-    SessionImplementation(SessionFactory parent, String driver, String url,
+    protected SessionImplementation(SessionFactory parent, String driver, String url,
                           String username, String password) {
         this.parent = parent;
         dirtyFlags = new LinkedList<>();
@@ -93,9 +94,7 @@ public class SessionImplementation implements Session {
             if(con != null && con.isValid(30))
                return !isValid;
         } catch (SQLException e) {
-            String msg = "An unknown fatal error occurred";
-            MyLogger.logger.fatal(msg);
-            throw new RuntimeException(msg, e);
+            throw new RuntimeException("An unknown fatal error occurred", e);
         }
 
         return true;
@@ -106,7 +105,7 @@ public class SessionImplementation implements Session {
      * @param pojo The object to save
      * @return The object that was saved
      */
-    Object save(Object pojo) {
+    protected Object save(Object pojo) {
 
         // The Class of the object to update
         Class<?> clazz = pojo.getClass();
@@ -188,7 +187,7 @@ public class SessionImplementation implements Session {
      * @return The object associated with the ID from the repo
      * @throws RuntimeException - is thrown when connection to the database cannot be established
      */
-    Object getObjectFromRepo(Class<?> clazz, Identifier id) {
+    protected Object getObjectFromRepo(Class<?> clazz, Identifier id) {
 
         // if the id isn't supplied, there is nothing to get
         if(id == null) {
@@ -411,14 +410,22 @@ public class SessionImplementation implements Session {
         StringBuilder query = new StringBuilder();
         query.append( "UPDATE \"").append(tableName).append("\" SET \"");
 
+        boolean isPurePrimaryKey = true;
         // Get the column names
         for(Field field : clazz.getDeclaredFields()){
             String name = fieldToNamesMap.get(field.getName());
             // if the field has been mapped to the table and is not a primary key
-            if(name != null && !primaryKey.contains(name))
+            if(name != null && !primaryKey.contains(name)) {
                 query.append(name).append("\"=?, \"");
+                isPurePrimaryKey = false;
+            }
         }
-        query.setLength(query.length() - 3);
+        if(isPurePrimaryKey) {
+            MyLogger.logger.error("Cannot update a pure primary key, make sure to save instead");
+            throw new InputMismatchException("Cannot Update primary keys");
+        }
+        if(clazz.getDeclaredFields().length > 0)
+            query.setLength(query.length() - 3);
 
         // Get the Where Clause
         query.append(" WHERE \"");
@@ -486,7 +493,7 @@ public class SessionImplementation implements Session {
                             continue;
                         } else { // if we defined the id, use is as a placeholder
                             field.setAccessible(true);
-                            value = field.getInt(pojo);
+                            value = field.get(pojo);
                             // set the placeholder
                             setPlaceholder(type, value, ps, ++i);
                         }
@@ -512,20 +519,20 @@ public class SessionImplementation implements Session {
                     ((SessionFactoryImplementation) getParent()).
                             addToCachedData(retVal);
                     ((SessionFactoryImplementation) getParent()).
-                            removeFromCachedData(pojo);
+                            removeCacheToDelete(tableName, parent.getId(retVal));
                 }
                 return retVal;
             }
 
         }catch (SQLException e) {
-            String msg = "Could not save object to Database" + clazz;
-            msg += "\n" + e.getMessage();
-            MyLogger.logger.error(msg);
+            StringBuilder msg = new StringBuilder();
+            msg.append("Could not save object to Database\n");
+            msg.append(clazz);
+            msg.append("\n" + e.getMessage());
+            String out = msg.toString();
+            MyLogger.logger.error(out);
             return null;
         } catch (IllegalAccessException e) {
-            String msg = "Could not access a field in " + clazz;
-            msg += "\n" + e.getMessage();
-            MyLogger.logger.error(msg);
             return null;
         }
         // nothing was found return null
@@ -577,7 +584,7 @@ public class SessionImplementation implements Session {
                 } else if (placeholderClass == BigDecimal.class) {
                     ps.setBigDecimal(++i, (BigDecimal) placeholder);
                 } else if (placeholderClass == Character.class) {
-                    ps.setNString(++i, ((Character) placeholder).toString());
+                    ps.setString(++i, ((Character) placeholder).toString());
                 } else if (placeholderClass == String.class) {
                     ps.setString(++i, (String) placeholder);
                 } else if (placeholderClass == Boolean.class) {
@@ -630,7 +637,7 @@ public class SessionImplementation implements Session {
                 }else if(placeholderClass == BigDecimal.class){
                     ps.setBigDecimal(++i, (BigDecimal) placeholder);
                 }else if(placeholderClass == Character.class){
-                    ps.setNString(++i, ((Character) placeholder).toString());
+                    ps.setString(++i, ((Character) placeholder).toString());
                 }else if(placeholderClass == String.class){
                     ps.setString(++i, (String)placeholder);
                 }else if(placeholderClass == Boolean.class) {
@@ -807,7 +814,7 @@ public class SessionImplementation implements Session {
                         if(rs.wasNull())
                             field.set(retVal, null);
                         else {
-                            Short val = rs.getShort(name);
+                            Double val = rs.getDouble(name);
                             field.set(retVal, val);
                         }
                         break;}
@@ -822,7 +829,7 @@ public class SessionImplementation implements Session {
                         }
                         break;}
                     case "char":
-                        rs.getNString(name);
+                        rs.getString(name);
                         if(rs.wasNull())
                         {
                             String msg = "Cannot Assign a null value to a primitive Type";
@@ -830,12 +837,12 @@ public class SessionImplementation implements Session {
                             throw new IllegalArgumentException(msg);
                         }
                     case "java.lang.Character":{
-                        rs.getNString(name);
+                        rs.getString(name);
                         field.setAccessible(true);
                         if(rs.wasNull())
                             field.set(retVal, null);
                         else {
-                            String val = rs.getNString(name);
+                            String val = rs.getString(name);
                             field.set(retVal, val.charAt(0));
                         }
                         break;}
@@ -873,13 +880,11 @@ public class SessionImplementation implements Session {
 
             }
         } catch (IllegalAccessException e) {
-            String msg = "A field could not be accessed by reflection";
-            MyLogger.logger.fatal(msg);
-            throw new RuntimeException(msg, e);
+            MyLogger.logger.fatal("A field could not be accessed by reflection");
+            throw new RuntimeException("A field could not be accessed by reflection", e);
         }catch (SQLException | NullPointerException e) {
-            String msg = "Could not extract info from the Result Set Properly, Make sure you mapped out the POJO Correctly";
-            MyLogger.logger.fatal(msg);
-            throw new RuntimeException(msg, e);
+            MyLogger.logger.fatal("Could not extract info from the Result Set Properly, Make sure you mapped out the POJO Correctly");
+            throw new RuntimeException("Could not extract info from the Result Set Properly, Make sure you mapped out the POJO Correctly", e);
         }
 
         return retVal;
@@ -943,6 +948,8 @@ public class SessionImplementation implements Session {
                     update(tableName, id);            //  update the database
                 } catch (ResourceNotFoundException e) {
                     MyLogger.logger.error("Tried updating an object that doesn't exist");
+                } catch (InputMismatchException e) {
+                    MyLogger.logger.info("Skipping pure primary key");
                 }
             });
         });
