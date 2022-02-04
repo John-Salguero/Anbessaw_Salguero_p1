@@ -1,0 +1,71 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE salanb-configuration SYSTEM
+        "http://johnsalguero.com/dtd/salanb-configuration-0.1.dtd">
+<salanb-configuration>
+    <session-factory>
+
+        <property name = "salanb.connection.driver_class">
+            org.postgresql.Driver
+        </property>
+
+        <property name = "salanb.connection.url">
+            jdbc:postgresql://john2201javareact.c52ukl0dxifi.us-east-1.rds.amazonaws.com:5432/postgres
+        </property>
+
+        <property name = "salanb.connection.username">
+            postgres
+        </property>
+
+        <property name = "salanb.connection.password">
+            vnvBv3exzYY7pavbGo6b
+        </property>
+
+        <!-- List of XML mapping files -->
+        <mapping resource = "Movie.salanb.test.xml"/>
+        <mapping resource = "UserAccounts.salanb.test.xml"/>
+    </session-factory>
+    <session-factory name="PK">
+
+        <property name = "salanb.connection.driver_class">
+            org.postgresql.Driver
+        </property>
+
+        <property name = "salanb.connection.url">
+            jdbc:postgresql://john2201javareact.c52ukl0dxifi.us-east-1.rds.amazonaws.com:5432/postgres
+        </property>
+
+        <property name = "salanb.connection.username">
+            postgres
+        </property>
+
+        <property name = "salanb.connection.password">
+            vnvBv3exzYY7pavbGo6b
+        </property>
+
+        <!-- List of XML mapping files -->
+        <mapping resource = "Movie.salanb.test.xml"/>
+        <mapping resource = "PKTest.test.xml"/>
+    </session-factory>
+    <session-factory name="Defined">
+
+        <property name = "salanb.connection.driver_class">
+            org.postgresql.Driver
+        </property>
+
+        <property name = "salanb.connection.url">
+            jdbc:postgresql://john2201javareact.c52ukl0dxifi.us-east-1.rds.amazonaws.com:5432/postgres
+        </property>
+
+        <property name = "salanb.connection.username">
+            postgres
+        </property>
+
+        <property name = "salanb.connection.password">
+            vnvBv3exzYY7pavbGo6b
+        </property>
+
+        <!-- List of XML mapping files -->
+        <mapping resource = "Movie.salanb.test.xml"/>
+        <mapping resource = "Defined.test.xml"/>
+    </session-factory>
+</salanb-configuration>
