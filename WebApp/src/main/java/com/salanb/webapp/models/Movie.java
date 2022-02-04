@@ -5,11 +5,11 @@ import java.math.BigDecimal;
 // Model is deigned to represent Data that we want to maintain within our application
 public class Movie {
 
-    private int id;
+    private Integer id;
     private String title;
     private BigDecimal price;
-    private boolean available;
-    private long returnDate;
+    private Boolean available;
+    private Long returnDate;
     private Integer directorId;
 
     // Default Constructor
@@ -22,7 +22,6 @@ public class Movie {
         this.title = m.title;
         this.price = m.price;
         this.available = m.available;
-        this.returnDate = m.returnDate;
         this.returnDate = m.returnDate;
         this.directorId = m.directorId;
     }

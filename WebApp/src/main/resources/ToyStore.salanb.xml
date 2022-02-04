@@ -1,0 +1,48 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE salanb-mapping SYSTEM
+        "http://johnsalguero.com/dtd/salanb-mapping-0.1.dtd">
+<salanb-mapping>
+        <class name="com.salanb.webapp.models.Customer" table="Customer">
+            <id name="id" column="c_id" type="Integer">
+                <generator class="NATURAL"/>
+            </id>
+            <property name="userName" type="String" column="username"/>
+            <property name="passWord" type="String" column="password"/>
+            
+        </class>
+        <class name="com.salanb.webapp.models.Product" table="product">
+            <id name="id" column="p_id" type="Integer">
+                <generator class="NATURAL"/>
+            </id>
+            <property name="name" type="String" column="name"/>
+            <property name="price" type="big_decimal" column="price"/>
+            <property name="availability" type="boolean" column="availability"/>
+        </class>
+        <class name="com.salanb.webapp.models.Transaction">
+            <id name="id" column="t_id" type="Integer">
+                <generator class="DEFINED"/>
+            </id>
+            <id name = "id" column="c_id" type ="Integer">
+                <generator class = "DEFINED"/>
+            </id>
+            <property name="date" type="Long" column="date"/>
+        </class>
+    <class name="com.salanb.webapp.models.Cart">
+        <id name="id" column="p_id" type="Integer">
+            <generator class="DEFINED"/>
+        </id>
+        <id name = "id" column="c_id" type ="Integer">
+            <generator class = "DEFINED"/>
+        </id>
+        <property name="amount" type="Integer" column="amount"/>
+    </class>
+    <class name="com.salanb.webapp.models.Transaction_Product">
+        <id name="id" column="p_id" type="Integer">
+            <generator class="DEFINED"/>
+        </id>
+        <id name = "id" column="t_id" type ="Integer">
+            <generator class = "DEFINED"/>
+        </id>
+        <property name="amount" type="Integer" column="amount"/>
+    </class>
+</salanb-mapping>

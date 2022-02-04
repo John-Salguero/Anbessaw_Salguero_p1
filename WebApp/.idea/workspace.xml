@@ -5,50 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7df346b5-5aa7-4a8b-bd77-bc18acbb9eeb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/utillities/Pair.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/InstallAndCopy.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/Movie.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/UserAccounts.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/UserContent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/servlets/MainServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/servlets/RequestHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/controllers/ProductController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/Cart.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/Customer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/Product.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/Transaction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/Transaction_Product.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/services/ProductService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ToyStore.salanb.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ORM/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/pom.xml.orig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/models/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/test/java/testmodels/Movie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/models/UserAccounts.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/test/java/testmodels/UserAccounts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/models/UserContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/test/java/testmodels/UserContent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/session/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/session/Session.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/session/SessionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/session/SessionFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/session/SessionFactoryImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/session/SessionImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/session/SessionImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/session/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/session/Transaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/utillities/IdentifierImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/main/java/com/salanb/orm/utillities/IdentifierImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/resources/Movie.salanb.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Movie.salanb.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/main/resources/UserAccount.salanb.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/UserAccount.salanb.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/test/java/test/app/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/test/java/test/app/AppTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/test/java/test/configuration/ConfigurationFactoryImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/test/java/test/configuration/ConfigurationFactoryImplementationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/test/java/test/session/SessionFactoryImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/test/java/test/session/SessionFactoryImplementationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ORM/src/test/java/test/session/SessionImplementationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ORM/src/test/java/test/session/SessionImplementationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/Movie.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -66,6 +49,12 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/Revature Files/SpringMovieApp" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Tomas Anbessaw\Anbessaw_Salguero_p1\WebApp\src\main\resources" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
