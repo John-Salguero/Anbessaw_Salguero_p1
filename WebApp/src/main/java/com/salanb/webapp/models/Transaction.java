@@ -39,7 +39,7 @@ public class Transaction {
         this.date = date;
     }
 
-    public Integer getC_id() {
+    public int getC_id() {
         return c_id;
     }
 

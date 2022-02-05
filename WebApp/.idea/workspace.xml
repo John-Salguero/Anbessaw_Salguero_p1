@@ -5,20 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79ccafe5-bf78-49ae-aa7d-7c1609060dc1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/controllers/CartController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/controllers/CustomerController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/controllers/TransactionController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/repositories/CartRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/repositories/CartRepoDBImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/repositories/CustomerRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/repositories/CustomerRepoDBImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/repositories/ProductRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/repositories/ProductRepoDBImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/repositories/TransactionRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/repositories/TransactionRepoDBImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/services/CartService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/services/CartServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/services/CustomerService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/services/CustomerServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/services/ProductServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/services/TransactionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/services/TransactionServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/Movie.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/UserAccounts.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/UserContent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/servlets/RequestHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/servlets/RequestHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Movie.salanb.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ToyStore.salanb.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ToyStore.salanb.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/UserAccount.salanb.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/controllers/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/controllers/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/salanb/webapp/models/Transaction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -50,5 +70,16 @@
       <updated>1644011874989</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
