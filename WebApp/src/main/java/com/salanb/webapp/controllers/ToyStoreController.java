@@ -122,7 +122,7 @@ public class ToyStoreController {
     }
 
     public void getWelcome(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.getWriter().append("Welcome to Thomas Anbessa and John Salguero's ToyStore\n");
+        response.getWriter().append("Welcome to Tomas Anbessaw and John Salguero's ToyStore\n");
         response.getWriter().append("To Display our product make a get request to \"/SalAnbToyStore/toys\"\n");
         response.getWriter().append("To see an individual product make a get request to  \"/SalAnbToyStore/toys/{id}\"\n");
     }

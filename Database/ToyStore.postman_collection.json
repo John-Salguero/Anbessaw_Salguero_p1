@@ -14,13 +14,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080//SalAnbToyStore",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
+								"",
 								"SalAnbToyStore"
 							]
 						}
@@ -33,10 +37,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore/toys",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/toys",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
@@ -51,7 +58,23 @@
 					"name": "Get Toy",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/toys/5",
+							"protocol": "http",
+							"host": [
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"SalAnbToyStore",
+								"toys",
+								"5"
+							]
+						}
 					},
 					"response": []
 				},
@@ -59,7 +82,22 @@
 					"name": "Show Cart",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/showcart",
+							"protocol": "http",
+							"host": [
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"SalAnbToyStore",
+								"showcart"
+							]
+						}
 					},
 					"response": []
 				},
@@ -67,7 +105,22 @@
 					"name": "Get All Transactions",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/transactions",
+							"protocol": "http",
+							"host": [
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"SalAnbToyStore",
+								"transactions"
+							]
+						}
 					},
 					"response": []
 				}
@@ -86,10 +139,13 @@
 							"raw": "{\r\n    \"username\":\"John\",\r\n    \"password\":\"password\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore/signup",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/signup",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
@@ -107,13 +163,16 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"password\"\r\n}"
+							"raw": "{\r\n    \"username\":\"John\",\r\n    \"password\":\"password\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore/login",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/login",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
@@ -134,10 +193,13 @@
 							"raw": "{\r\n    \"name\":\"Toy Horsey\",\r\n    \"price\":\"2.50\",\r\n    \"isAvailable\":\"true\",\r\n    \"description\":\"Neighh!!!\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore/addtoy",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/addtoy",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
@@ -154,10 +216,13 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore/signout",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/signout",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
@@ -174,16 +239,19 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore/addtocart/5",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/addtocart/1",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
 								"SalAnbToyStore",
 								"addtocart",
-								"5"
+								"1"
 							]
 						}
 					},
@@ -195,10 +263,13 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore/checkout",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/checkout",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
@@ -219,10 +290,13 @@
 							"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"password\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore/login",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/login",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
@@ -245,13 +319,16 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\":5,\r\n    \"name\":\"Toy Horsey\",\r\n    \"price\":\"2.50\",\r\n    \"isAvailable\":\"true\",\r\n    \"description\":\"Neighh!!!!!!!!!\"\r\n}"
+							"raw": "{\r\n    \"id\":1,\r\n    \"name\":\"Toy Horsey\",\r\n    \"price\":\"2.50\",\r\n    \"isAvailable\":\"true\",\r\n    \"description\":\"Neighh!!!!!!!!!\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore/toys",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/toys",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
@@ -273,16 +350,19 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore/toys/3",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/toys/13",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
 								"SalAnbToyStore",
 								"toys",
-								"3"
+								"13"
 							]
 						}
 					},
@@ -294,10 +374,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/SalAnbToyStore/removefromcart/1",
+							"raw": "http://ec2-54-221-182-1.compute-1.amazonaws.com:8080/SalAnbToyStore/removefromcart/1",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-54-221-182-1",
+								"compute-1",
+								"amazonaws",
+								"com"
 							],
 							"port": "8080",
 							"path": [
