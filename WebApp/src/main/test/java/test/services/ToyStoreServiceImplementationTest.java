@@ -185,6 +185,7 @@ public class ToyStoreServiceImplementationTest {
 
         assertNotNull(tsS.deleteCustomer(session, newUser.getId()));
         assertNotNull(tsS.deleteToy(session, toy1.getId()));
+        assertNotNull(tsS.deleteToy(session, toy2.getId()));
     }
 
     @Test
