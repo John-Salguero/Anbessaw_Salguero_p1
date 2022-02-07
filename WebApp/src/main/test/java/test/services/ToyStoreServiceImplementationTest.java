@@ -95,6 +95,7 @@ public class ToyStoreServiceImplementationTest {
         TransactionDisplay td = tsS.checkout(newUser.getId(), session);
         assertNotNull(td);
 
+        assertNotNull(tsS.deleteTransactionProduct(session, toy.getId(), td.getId()));
         assertNotNull(tsS.deleteTransaction(session, td.getId()));
         assertNotNull(tsS.deleteCustomer(session, newUser.getId()));
         assertNotNull(tsS.deleteToy(session, toy.getId()));
@@ -133,7 +134,23 @@ public class ToyStoreServiceImplementationTest {
     }
 
     @Test
-    public void clearCart() {
+    public void clearCart() throws ParserConfigurationException {
+        Session session = App.getInstance().getNewSession();
+        Account user = new Account();
+        user.setUsername("Test_User");
+        user.setPassword("Test_User");
+        Product toy = new Product(123, "Big Bird", new BigDecimal("2.50"), true, "");
+
+        toy = tsS.addToy(session, toy);
+        assertNotNull(toy);
+        Customer newUser = tsS.signUp(session, user);
+        assertNotNull(newUser);
+        List<CartItem> cartItems = tsS.addToCart(session, newUser.getId(), toy.getId());
+        assertNotNull(cartItems);
+        assertTrue(tsS.clearCart(session, newUser.getId()));
+
+        assertNotNull(tsS.deleteCustomer(session, newUser.getId()));
+        assertNotNull(tsS.deleteToy(session, toy.getId()));
     }
 
     @Test
@@ -141,10 +158,54 @@ public class ToyStoreServiceImplementationTest {
     }
 
     @Test
-    public void removeFromCart() {
+    public void removeFromCart() throws ParserConfigurationException {
+        Session session = App.getInstance().getNewSession();
+        Account user = new Account();
+        user.setUsername("Test_User");
+        user.setPassword("Test_User");
+        Product toy1 = new Product(123, "Big Bird", new BigDecimal("2.50"), true, "");
+        Product toy2 = new Product(123, "Tickle Me Elmo", new BigDecimal("2.50"), true, "");
+
+
+        toy1 = tsS.addToy(session, toy1);
+        assertNotNull(toy1);
+        toy2 = tsS.addToy(session, toy2);
+        assertNotNull(toy2);
+        Customer newUser = tsS.signUp(session, user);
+        assertNotNull(newUser);
+        List<CartItem> cartItems = tsS.addToCart(session, newUser.getId(), toy1.getId());
+        assertNotNull(cartItems);
+        cartItems = tsS.addToCart(session, newUser.getId(), toy2.getId());
+        assertNotNull(cartItems);
+        cartItems = tsS.addToCart(session, newUser.getId(), toy1.getId());
+        assertNotNull(cartItems);
+        List<CartItem> remainingCart = tsS.removeFromCart(session, newUser.getId(), toy1.getId(), 1);
+        assertNotNull(remainingCart);
+        assertTrue(tsS.clearCart(session, newUser.getId()));
+
+        assertNotNull(tsS.deleteCustomer(session, newUser.getId()));
+        assertNotNull(tsS.deleteToy(session, toy1.getId()));
     }
 
     @Test
-    public void getUserCart() {
+    public void getUserCart() throws ParserConfigurationException {
+        Session session = App.getInstance().getNewSession();
+        Account user = new Account();
+        user.setUsername("Test_User");
+        user.setPassword("Test_User");
+        Product toy = new Product(123, "Big Bird", new BigDecimal("2.50"), true, "");
+
+        toy = tsS.addToy(session, toy);
+        assertNotNull(toy);
+        Customer newUser = tsS.signUp(session, user);
+        assertNotNull(newUser);
+        List<CartItem> cartItems = tsS.addToCart(session, newUser.getId(), toy.getId());
+        assertNotNull(cartItems);
+        List<CartItem> remainingCart = tsS.getUserCart(session, newUser.getId());
+        assertNotNull(remainingCart);
+        assertTrue(tsS.clearCart(session, newUser.getId()));
+
+        assertNotNull(tsS.deleteCustomer(session, newUser.getId()));
+        assertNotNull(tsS.deleteToy(session, toy.getId()));
     }
 }

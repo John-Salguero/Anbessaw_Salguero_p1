@@ -103,12 +103,10 @@ public class ToyStoreServiceImplementation implements ToyStoreService {
         Cart prevCart = tsR.getCart(session, cart);
         if(prevCart != null) {
             cart.setAmount(prevCart.getAmount() + 1);
-            System.out.println("Updating a cart");
             tsR.updateCart(session, cart);
         }
         else {
             cart.setAmount(1);
-            System.out.println("Saving a cart");
             tsR.addCart(session, cart);
         }
 
@@ -121,7 +119,6 @@ public class ToyStoreServiceImplementation implements ToyStoreService {
             CartItem item = new CartItem();
             item.setItem(tsR.getProduct(session, new Product(elem.getProductId())));
             item.setAmount(elem.getAmount());
-            System.out.println("Adding item to cart: " + item.getItem());
             retVal.add(item);
         }
 
@@ -160,6 +157,7 @@ public class ToyStoreServiceImplementation implements ToyStoreService {
             tp.setAmount(elem.getAmount());
             tp.setTransactionId(newTransaction.getId());
             tsR.addTransactionProduct(session, tp);
+            tsR.deleteCart(session, elem);
         }
 
         return retVal;
