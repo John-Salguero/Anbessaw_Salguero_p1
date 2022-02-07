@@ -1,37 +1,65 @@
 package test.services;
 
+import com.salanb.orm.App;
+import com.salanb.orm.session.Session;
+import com.salanb.webapp.models.*;
+import com.salanb.webapp.repositories.ToyStoreRepo;
+import com.salanb.webapp.repositories.ToyStoreRepoImplementation;
+import com.salanb.webapp.services.ToyStoreService;
+import com.salanb.webapp.services.ToyStoreServiceImplementation;
 import org.junit.Test;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class ToyStoreServiceImplementationTest {
 
+    ToyStoreRepo tsR = new ToyStoreRepoImplementation();
+    ToyStoreService tsS = new ToyStoreServiceImplementation(tsR);
+
     @Test
-    public void getAllToys() {
+    public void getAllToys() throws ParserConfigurationException {
+        List<Product> productList = tsS.getAllToys(App.getInstance().getNewSession());
+        assertNotNull(productList);
     }
 
     @Test
-    public void getToyById() {
+    public void getToyById() throws ParserConfigurationException {
+        Session session = App.getInstance().getNewSession();
+        Product toy = new Product(123, "Big Bird", new BigDecimal("2.50"), true, "");
+
+        toy = tsS.addToy(session, toy);
+        List<Product> productList = tsS.getAllToys(session);
+        assertNotNull(productList);
+
+        tsS.deleteToy(session, toy.getId());
     }
 
     @Test
-    public void addToy() {
-    }
+    public void login() throws ParserConfigurationException {
+        Session session = App.getInstance().getNewSession();
+        Account user = new Account();
+        user.setUsername("Test_User");
+        user.setPassword("Test_User");
 
-    @Test
-    public void login() {
-    }
+        Customer newUser = tsS.signUp(session, user);
+        assertNotNull(newUser);
+        assertNotNull(tsS.login(session, user));
 
-    @Test
-    public void signUp() {
+        tsS.deleteCustomer(session, newUser.getId());
     }
 
     @Test
     public void getProductTransactions() {
+
     }
 
     @Test
     public void getCustomers() {
+
     }
 
     @Test
@@ -51,7 +79,25 @@ public class ToyStoreServiceImplementationTest {
     }
 
     @Test
-    public void checkout() {
+    public void checkout() throws ParserConfigurationException {
+        Session session = App.getInstance().getNewSession();
+        Account user = new Account();
+        user.setUsername("Test_User");
+        user.setPassword("Test_User");
+        Product toy = new Product(123, "Big Bird", new BigDecimal("2.50"), true, "");
+
+        toy = tsS.addToy(session, toy);
+        assertNotNull(toy);
+        Customer newUser = tsS.signUp(session, user);
+        assertNotNull(newUser);
+        List<CartItem> cartItems = tsS.addToCart(session, newUser.getId(), toy.getId());
+        assertNotNull(cartItems);
+        TransactionDisplay td = tsS.checkout(newUser.getId(), session);
+        assertNotNull(td);
+
+        assertNotNull(tsS.deleteTransaction(session, td.getId()));
+        assertNotNull(tsS.deleteCustomer(session, newUser.getId()));
+        assertNotNull(tsS.deleteToy(session, toy.getId()));
     }
 
     @Test

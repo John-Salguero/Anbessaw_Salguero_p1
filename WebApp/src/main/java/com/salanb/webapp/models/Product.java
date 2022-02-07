@@ -10,6 +10,14 @@ public class Product {
     private Boolean isAvailable;
     private String description;
 
+    public Product(Integer id, String name, BigDecimal price, Boolean isAvailable, String description) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.isAvailable = isAvailable;
+        this.description = description;
+    }
+
     public Product(){
         id = 0;
     }
