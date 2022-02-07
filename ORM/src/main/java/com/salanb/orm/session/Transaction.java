@@ -110,18 +110,18 @@ public class Transaction {
             throw new IllegalStateException("This session has closed.");
 
         SessionFactoryImplementation sf = (SessionFactoryImplementation) parent.getParent();
+        SessionImplementation session = (SessionImplementation)parent;
 
         Identifier id = sf.getId(pojo);
         String tableName = sf.getTableMaps().get(pojo.getClass());
-        if(sf.isCachedToDelete(pojo))
-            return pojo;
-        sf.addCachedToDelete(tableName, id);
-        sf.removeFromCachedData(tableName, id);
+
 
         // add to the dirty flags that we deleted some info
-        parent.setDirtyFlag(id);
+        parent.removeDirtyFlag(id);
+        T deletedObject = (T)session.delete(pojo.getClass(), id);
+        sf.removeFromCachedData(tableName, id);
 
-        return pojo;
+        return deletedObject;
     }
 
     /**

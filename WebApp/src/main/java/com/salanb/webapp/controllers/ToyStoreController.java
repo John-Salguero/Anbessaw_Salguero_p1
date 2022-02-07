@@ -57,14 +57,15 @@ public class ToyStoreController {
         Session session = (Session)request.getSession().getAttribute("session");
         String uri = request.getRequestURI();
         String[] splitURI = uri.split("/");
-        if(splitURI.length == 4) {
+        if(splitURI.length == 3) {
             // Extract Data from the Request
             Product product;
             try {
                 BufferedReader reader = request.getReader();
                 product = gson.fromJson(reader, Product.class);
+                product.setId(0);
             } catch (JsonSyntaxException | JsonIOException e){
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not read in the toy data from body");
                 return;
             }
 
@@ -73,11 +74,11 @@ public class ToyStoreController {
                 response.getWriter().append(gson.toJson(product));
             }
             else{
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not write data to body.");
             }
         }
         else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed URI");
         }
 
     }
@@ -92,7 +93,7 @@ public class ToyStoreController {
         String uri = request.getRequestURI();
         String[] splitURI = uri.split("/");
 
-        if(splitURI.length != 4) // if the url is malformed
+        if(splitURI.length != 3) // if the url is malformed
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         else {                  // if the url is good
             Session session = (Session)request.getSession().getAttribute("session");
@@ -130,7 +131,7 @@ public class ToyStoreController {
         String uri = request.getRequestURI();
         String[] splitURI = uri.split("/");
 
-        if(splitURI.length != 4) // if the url is malformed
+        if(splitURI.length != 3) // if the url is malformed
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         else {                  // if the url is good
             Session session = (Session)request.getSession().getAttribute("session");
@@ -284,6 +285,12 @@ public class ToyStoreController {
             id = Integer.parseInt(splitURI[3]);
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        Product item = tsS.getToyById(session, id);
+        if(!item.getAvailable()){
+            response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "This stock is unavailable");
             return;
         }
 
@@ -608,21 +615,19 @@ public class ToyStoreController {
             return;
         }
 
-        String user = (String)request.getSession().getAttribute("uid");
         String amount = (String)request.getAttribute("amount");
         String product = splitURI[3];
-        int uid;
+        int uid = (Integer)request.getSession().getAttribute("uid");
         int pid;
         int amnt;
         try {
-            uid = Integer.parseInt(user);
             pid = Integer.parseInt(product);
             if(amount != null)
                 amnt = Integer.parseInt(amount);
             else
                 amnt = 1;
         } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Not a proper ID");
             return;
         }
 
@@ -634,7 +639,7 @@ public class ToyStoreController {
             response.getWriter().append("This is what remains\n");
             response.getWriter().append(gson.toJson(cart));
         }else
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Item is not in your cart");
     }
 
     public void showMyCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -651,19 +656,17 @@ public class ToyStoreController {
             return;
         }
 
-        String user = (String)request.getSession().getAttribute("uid");
-        int uid;
-        try {
-            uid = Integer.parseInt(user);
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
+        int uid = (Integer)request.getSession().getAttribute("uid");
 
         List<CartItem> cart = tsS.getUserCart(session, uid);
         if(cart != null) {
             response.getWriter().append(gson.toJson(cart));
         }else
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    public void signOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.getSession().invalidate();
+        response.getWriter().append("You're now signed out.");
     }
 }

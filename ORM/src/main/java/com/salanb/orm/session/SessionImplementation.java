@@ -56,6 +56,15 @@ public class SessionImplementation implements Session {
     }
 
     /**
+     * Removes a dirty flag for information that needs to be written to the database upon close
+     * @param key - the key of the data in the table
+     */
+    @Override
+    public void removeDirtyFlag(Identifier key) {
+        dirtyFlags.remove(key);
+    }
+
+    /**
      * Gets the JDBC connection object for the Database
      * @return The JDBC Connection object
      */
@@ -152,7 +161,7 @@ public class SessionImplementation implements Session {
      * @return - The object that was deleted
      * @throws RuntimeException - is thrown when connection to the database cannot be established
      */
-    private Object delete(Class<?> clazz, Identifier id) {
+    Object delete(Class<?> clazz, Identifier id) {
 
         Object deletePOJO = getObjectFromRepo(clazz, id);
         if(deletePOJO == null)
@@ -218,7 +227,10 @@ public class SessionImplementation implements Session {
             throw new RuntimeException(msg);
         }
         // Execute the statement
-        return  executeSQLStatement(clazz, id, ps, 0);
+        Object fromDatabase = executeSQLStatement(clazz, id, ps, 0);
+        if(fromDatabase != null)
+            sf.addToCachedData(fromDatabase);
+        return fromDatabase;
     }
 
     /**
@@ -241,7 +253,7 @@ public class SessionImplementation implements Session {
         }
 
         try {
-            String query = "SELECT * FROM " + tableName;
+            String query = "SELECT * FROM \"" + tableName +"\"";
             PreparedStatement ps = connection.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
@@ -249,7 +261,7 @@ public class SessionImplementation implements Session {
                 T retrievedPojo = buildObject(clazz, rs, fieldToNamesMap);
                 if (retrievedPojo != null) {
                     Object cachedPojo = sf.getFromCachedData(retrievedPojo);
-                    if (cachedPojo == null) { // if it's not cached, cache it and return the cached version
+                    if (cachedPojo == null) { // if it's not cached, add it to the cache
                         ((SessionFactoryImplementation) getParent()).
                                 addToCachedData(retrievedPojo);
                         retVal.add(retrievedPojo);
@@ -518,8 +530,6 @@ public class SessionImplementation implements Session {
                 if(retVal != null) {
                     ((SessionFactoryImplementation) getParent()).
                             addToCachedData(retVal);
-                    ((SessionFactoryImplementation) getParent()).
-                            removeCacheToDelete(tableName, parent.getId(retVal));
                 }
                 return retVal;
             }
@@ -655,9 +665,6 @@ public class SessionImplementation implements Session {
 
             if(rs.next()){
                 retVal = buildObject(clazz, rs, fieldToNamesMap);
-                if(retVal != null)
-                    ((SessionFactoryImplementation)getParent()).
-                            addToCachedData(retVal);
                 return retVal;
             }
 
@@ -879,10 +886,7 @@ public class SessionImplementation implements Session {
                 }
 
             }
-        } catch (IllegalAccessException e) {
-            MyLogger.logger.fatal("A field could not be accessed by reflection");
-            throw new RuntimeException("A field could not be accessed by reflection", e);
-        }catch (SQLException | NullPointerException e) {
+        } catch (IllegalAccessException | NullPointerException | SQLException e) {
             MyLogger.logger.fatal("Could not extract info from the Result Set Properly, Make sure you mapped out the POJO Correctly");
             throw new RuntimeException("Could not extract info from the Result Set Properly, Make sure you mapped out the POJO Correctly", e);
         }
@@ -899,7 +903,6 @@ public class SessionImplementation implements Session {
 
         final SessionFactoryImplementation sf = (SessionFactoryImplementation) parent;
         Map<String, Map<Identifier, Object>> cachedData = sf.getCachedData();
-        Map<String, Set<Pair<Class<?>, Identifier>>> cacheToDelete = sf.getCacheToDelete();
 
         // update All the new Objects using for each loops in conjunction with streams
         for(Map.Entry<String, Map<Identifier, Object>> tableNameToIdObjMap : cachedData.entrySet()) {
@@ -914,26 +917,13 @@ public class SessionImplementation implements Session {
                     }
 
                 });
-
-        }
-
-        // Delete all the cached objects to be deleted using for each loops with streams
-        for(Map.Entry<String, Set<Pair<Class<?>, Identifier>>> tableNameToClassId : cacheToDelete.entrySet()) {
-            String tableName = tableNameToClassId.getKey();
-            tableNameToClassId.getValue().stream().filter( classId -> dirtyFlags.contains(classId.getValue())).forEach(
-                    classId -> {
-                        delete(classId.getKey(), classId.getValue());
-                        sf.removeCacheToDelete(tableName, classId.getValue());
-                    }
-            );
         }
 
     }
 
     @Override
     public void writeAllCache(
-            Map<String, Map<Identifier, Object>> cachedData,
-            Map<String, Set<Pair<Class<?>, Identifier>>> cacheToDelete) {
+            Map<String, Map<Identifier, Object>> cachedData) {
 
         // the session factory used to add and remove things from cache marked as final to use in lambdas
         final SessionFactoryImplementation sf = (SessionFactoryImplementation) parent;
@@ -953,17 +943,5 @@ public class SessionImplementation implements Session {
                 }
             });
         });
-
-        // Delete all the objects to be deleted using lambdas
-        // get the table name of the pairs
-        // for each entry in the map of tables to sets
-        cacheToDelete.forEach((tableName, setClassId) -> {  // take the key/value pair as arguments
-            setClassId.forEach(                             // for each pair of class, Ids in the set
-                    classID -> {                            // take the class,id pair as an entry
-                        delete(classID.getKey(), classID.getValue()); // delete the pair
-                        sf.removeCacheToDelete(tableName, classID.getValue()); // remove the object from the cache to be deleted
-                    });
-        });
-
     }
 }

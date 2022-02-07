@@ -41,13 +41,14 @@ public class RequestHelper {
         getProcessMap.put("transactions", tsC::getTransactions);
         getProcessMap.put("cart", tsC::getCarts);
         getProcessMap.put("productransaction", tsC::getProductTransaction);
-        getProcessMap.put("showmycart", tsC::showMyCart);
+        getProcessMap.put("showcart", tsC::showMyCart);
 
         postProcessMap.put("addtoy", tsC::addToy);
         postProcessMap.put("login", tsC::login);
-        postProcessMap.put("singup", tsC::signUp);
+        postProcessMap.put("signup", tsC::signUp);
         postProcessMap.put("checkout", tsC::checkout);
         postProcessMap.put("addtocart", tsC::addToCart);
+        postProcessMap.put("signout", tsC::signOut);
 
         putProcessMap.put("toys", tsC::updateToys);
         putProcessMap.put("customers", tsC::updateCustomers);

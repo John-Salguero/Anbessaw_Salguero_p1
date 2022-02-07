@@ -2,47 +2,46 @@
 <!DOCTYPE salanb-mapping SYSTEM
         "http://johnsalguero.com/dtd/salanb-mapping-0.1.dtd">
 <salanb-mapping>
-        <class name="com.salanb.webapp.models.Customer" table="Customer">
-            <id name="id" column="c_id" type="Integer">
-                <generator class="NATURAL"/>
-            </id>
-            <property name="userName" type="String" column="username"/>
-            <property name="passWord" type="String" column="password"/>
-            
-        </class>
-        <class name="com.salanb.webapp.models.Product" table="product">
-            <id name="id" column="p_id" type="Integer">
-                <generator class="NATURAL"/>
-            </id>
-            <property name="name" type="String" column="name"/>
-            <property name="price" type="big_decimal" column="price"/>
-            <property name="availability" type="boolean" column="availability"/>
-        </class>
-        <class name="com.salanb.webapp.models.Transaction" table = "transaction">
-            <id name="id" column="t_id" type="Integer">
-                <generator class="DEFINED"/>
-            </id>
-            <id name = "c_id" column="c_id" type ="Integer">
-                <generator class = "DEFINED"/>
-            </id>
-            <property name="date" type="Long" column="date"/>
-        </class>
-    <class name="com.salanb.webapp.models.Cart" table="cart">
-        <id name="p_id" column="p_id" type="Integer">
-            <generator class="DEFINED"/>
+    <class name="com.salanb.webapp.models.Customer" table="Customers">
+        <id name="id" column="Customer_Id" type="integer">
+            <generator class="NATURAL"/>
         </id>
-        <id name = "c_id" column="c_id" type ="Integer">
-            <generator class = "DEFINED"/>
-        </id>
-        <property name="amount" type="Integer" column="amount"/>
+        <property name="username" type="string" column="Username"/>
+        <property name="password" type="string" column="Password"/>
     </class>
-    <class name="com.salanb.webapp.models.Transaction_Product" table="transaction_product">
-        <id name="p_id" column="p_id" type="Integer">
+    <class name="com.salanb.webapp.models.Product" table="Product">
+        <id name="id" type="integer" column="Product_Id">
+            <generator class="NATURAL"/>
+        </id>
+        <property name="name" type="string" column="Name"/>
+        <property name="price" type="big_decimal" column="Price"/>
+        <property name="isAvailable" type="boolean" column="Available"/>
+        <property name="description" type="string" column="Description"/>
+    </class>
+    <class name="com.salanb.webapp.models.Transaction" table = "Transaction">
+        <id name="id" column="Transaction_Id" type="integer">
+            <generator class="NATURAL"/>
+        </id>
+        <property name = "customerId" column="Customer_Id" type ="integer"/>
+        <property name="date" type="long" column="Date"/>
+        <property name="subtotal" type="big_decimal" column="Subtotal"/>
+    </class>
+    <class name="com.salanb.webapp.models.Cart" table="Cart">
+        <id name="productId" column="Product_Id" type="integer">
             <generator class="DEFINED"/>
         </id>
-        <id name = "t_id" column="t_id" type ="Integer">
+        <id name = "customerId" column="Customer_Id" type ="integer">
             <generator class = "DEFINED"/>
         </id>
-        <property name="amount" type="Integer" column="amount"/>
+        <property name="amount" column="Amount" type="integer"/>
+    </class>
+    <class name="com.salanb.webapp.models.TransactionProduct" table="ProductTransaction">
+        <id name="productId" column="Product_Id" type="integer">
+            <generator class="DEFINED"/>
+        </id>
+        <id name = "transactionId" column="Transaction_Id" type ="integer">
+            <generator class = "DEFINED"/>
+        </id>
+        <property name="amount" type="integer" column="Amount"/>
     </class>
 </salanb-mapping>

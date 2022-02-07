@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public class ToyStoreServiceImplementation implements ToyStoreService {
 
 
-    private final ToyStoreRepo tsR;
+    private ToyStoreRepo tsR;
 
     public ToyStoreServiceImplementation(ToyStoreRepo tsR) {
         this.tsR = tsR;
@@ -101,11 +101,16 @@ public class ToyStoreServiceImplementation implements ToyStoreService {
         // Add the product to the user's cart, then return all the products in the cart
         Cart cart = new Cart(uid, id);
         Cart prevCart = tsR.getCart(session, cart);
-        if(prevCart != null)
+        if(prevCart != null) {
             cart.setAmount(prevCart.getAmount() + 1);
-        else
+            System.out.println("Updating a cart");
+            tsR.updateCart(session, cart);
+        }
+        else {
             cart.setAmount(1);
-        tsR.addCart(session, cart);
+            System.out.println("Saving a cart");
+            tsR.addCart(session, cart);
+        }
 
         // get all the products in the user's cart
         List<Cart> allCarts = tsR.getAllCarts(session);
@@ -116,6 +121,7 @@ public class ToyStoreServiceImplementation implements ToyStoreService {
             CartItem item = new CartItem();
             item.setItem(tsR.getProduct(session, new Product(elem.getProductId())));
             item.setAmount(elem.getAmount());
+            System.out.println("Adding item to cart: " + item.getItem());
             retVal.add(item);
         }
 

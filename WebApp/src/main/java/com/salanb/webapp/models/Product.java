@@ -10,6 +10,10 @@ public class Product {
     private Boolean isAvailable;
     private String description;
 
+    public Product(){
+        id = 0;
+    }
+
     public Product(int id) {
         this.id = id;
     }
@@ -52,5 +56,16 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", isAvailable=" + isAvailable +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

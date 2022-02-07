@@ -1,5 +1,7 @@
 package com.salanb.webapp.models;
 
+import com.salanb.orm.utillities.HashGenerator;
+
 public class Account {
     String username;
     String password;
@@ -18,5 +20,13 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", password='" + HashGenerator.getInstance().getMessageDigestString(password) + '\'' +
+                '}';
     }
 }

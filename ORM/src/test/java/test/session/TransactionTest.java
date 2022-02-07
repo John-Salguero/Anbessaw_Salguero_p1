@@ -141,6 +141,7 @@ public class TransactionTest {
         assertNotEquals(testPOJO, savedPOJO);
 
         assertNotNull(transaction.delete(updatePOJO));
+        assertNull(transaction.get(updatePOJO.getClass(), App.getInstance().getId(updatePOJO)));
         transaction.close();
     }
 
@@ -159,7 +160,7 @@ public class TransactionTest {
     @Test
     public void ObjectCanBeSave_Pure_Defined() {
         Transaction transaction = App.getInstance().getNewSession("Defined").getTransaction();
-        TestPOJO testPOJO = new TestPOJO((short)1, 2, 500L, Math.random(), "Fails", '\n');
+        TestPOJO testPOJO = new TestPOJO((short)1001, 2, 500L, Math.random(), "Fails", '\n');
         testPOJO.setId((int)(Math.random() * 100));
         TestPOJO savedPOJO = transaction.save(testPOJO);
 

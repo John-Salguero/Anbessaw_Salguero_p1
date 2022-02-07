@@ -11,7 +11,7 @@ public class Customer {
     }
 
     public Customer() {
-
+        id = 0;
     }
 
     public Integer getId() {

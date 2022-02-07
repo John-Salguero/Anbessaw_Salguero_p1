@@ -5,15 +5,23 @@
 <web-app>
   <display-name>Salguero and Anbessa's Toy Store</display-name>
 
+  <context-param>
+    <param-name>AppName</param-name>
+    <param-value>SalAnbToyStore</param-value>
+  </context-param>
+
+  <listener>
+    <listener-class>com.salanb.webapp.listeners.SessionListener</listener-class>
+  </listener>
+
   <servlet>
-    <servlet-name>SalAnbToySTore</servlet-name>
+    <servlet-name>SalAnbToyStore</servlet-name>
     <servlet-class>com.salanb.webapp.servlets.MainServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>SalAnbToySTore</servlet-name>
-    <url-pattern>/main</url-pattern>
+    <servlet-name>SalAnbToyStore</servlet-name>
+    <url-pattern>/*</url-pattern>
   </servlet-mapping>
-
 
 </web-app>

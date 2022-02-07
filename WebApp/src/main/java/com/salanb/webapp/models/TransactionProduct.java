@@ -14,7 +14,8 @@ public class TransactionProduct {
     }
 
     public TransactionProduct() {
-
+        transactionId = 0;
+        productId = 0;
     }
 
     public Integer getAmount() {

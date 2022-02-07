@@ -1,18 +1,16 @@
 package com.salanb.webapp.repositories;
 
 import com.salanb.orm.session.Session;
-import com.salanb.orm.utillities.JDBCConnection;
 import com.salanb.orm.utillities.ResourceNotFoundException;
 import com.salanb.webapp.models.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ToyStoreRepoImplementation implements ToyStoreRepo {
+
+    public ToyStoreRepoImplementation() {
+    }
+
     @Override
     public Cart addCart(Session session, Cart ct) {
         return session.getTransaction().save(ct);

@@ -59,14 +59,13 @@ public class SessionFactoryImplementationTest {
         // Setting up the factory
         SessionFactoryImplementation sessionFactory = Whitebox.newInstance(SessionFactoryImplementation.class);
         Whitebox.setInternalState(sessionFactory, "cachedData", cachedData);
-        Whitebox.setInternalState(sessionFactory, "cacheToDelete", cachedDelte);
         Whitebox.setInternalState(sessionFactory, "session", session);
 
         // test close
         sessionFactory.close();
 
         // verify proper state
-        Mockito.verify(session, Mockito.times(1)).writeAllCache(cachedData, cachedDelte);
+        Mockito.verify(session, Mockito.times(1)).writeAllCache(cachedData);
     }
 
     @Test
@@ -157,13 +156,6 @@ public class SessionFactoryImplementationTest {
         SessionFactoryImplementation sessionFactory = Whitebox.newInstance(SessionFactoryImplementation.class);
         Whitebox.setInternalState(sessionFactory,"cachedData", getCachedData);
         Map<String, Map<Identifier, Object>> session = sessionFactory.getCachedData();
-        assertNotNull(session);
-    }
-    @Test
-    public void getCacheToDelete() {
-        SessionFactoryImplementation sessionFactory = Whitebox.newInstance(SessionFactoryImplementation.class);
-        Whitebox.setInternalState(sessionFactory, "cacheToDelete", getCacheToDelete);
-        Map<String, Set<Pair<Class<?>, Identifier>>> session = sessionFactory.getCacheToDelete();
         assertNotNull(session);
     }
 }

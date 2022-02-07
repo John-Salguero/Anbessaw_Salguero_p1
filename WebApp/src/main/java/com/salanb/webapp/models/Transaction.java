@@ -11,6 +11,7 @@ public class Transaction {
     private BigDecimal subtotal;
 
     public Transaction() {
+        id = 0;
     }
 
     public Transaction(int id) {

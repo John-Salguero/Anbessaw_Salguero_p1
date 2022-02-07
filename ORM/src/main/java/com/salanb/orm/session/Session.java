@@ -15,12 +15,12 @@ public interface Session {
 
     void close();
     void writeAllCache(
-    Map<String, Map<Identifier, Object>> cachedData,
-    Map<String, Set<Pair<Class<?>, Identifier>>> cacheToDelete);
+    Map<String, Map<Identifier, Object>> cachedData);
 
     SessionFactory getParent();
     Transaction getTransaction();
     void setDirtyFlag(Identifier key);
+    void removeDirtyFlag(Identifier key);
     JDBCConnection getConnection();
     <T> List<T> getTableFromRepo(Class<T> clazz);
     boolean isInvalid();

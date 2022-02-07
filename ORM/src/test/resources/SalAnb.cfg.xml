@@ -23,6 +23,7 @@
         <!-- List of XML mapping files -->
         <mapping resource = "Movie.salanb.test.xml"/>
         <mapping resource = "UserAccounts.salanb.test.xml"/>
+        <mapping resource = "ToyStore.salanb.xml"/>
     </session-factory>
     <session-factory name="PK">
 

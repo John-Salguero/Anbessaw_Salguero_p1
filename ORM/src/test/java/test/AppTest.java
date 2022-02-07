@@ -38,7 +38,7 @@ public class AppTest {
     }
 
     @Test
-    public void getNewSession_Sad_Unconfigured() throws NoSuchFieldException, IllegalAccessException {
+    public void getNewSession_Sad_Unconfigured_Named() throws NoSuchFieldException, IllegalAccessException {
         App app = Whitebox.newInstance(App.class);
         Field instance = App.class.getDeclaredField("instance");
         instance.setAccessible(true);
@@ -47,6 +47,18 @@ public class AppTest {
         factories.setAccessible(true);
         factories.set(app, new HashMap<>());
         assertThrows(RuntimeException.class, ()-> app.getNewSession(""));
+    }
+
+    @Test
+    public void getNewSession_Sad_Unconfigured_Unnamed() throws NoSuchFieldException, IllegalAccessException {
+        App app = Whitebox.newInstance(App.class);
+        Field instance = App.class.getDeclaredField("instance");
+        instance.setAccessible(true);
+        instance.set(null, app);
+        Field factories = App.class.getDeclaredField("sessionFactories");
+        factories.setAccessible(true);
+        factories.set(app, new HashMap<>());
+        assertThrows(ParserConfigurationException.class, app::getNewSession);
     }
 
     @Test
