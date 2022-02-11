@@ -15,32 +15,32 @@ you by using GET POST PUT and DELETE HTTP Requests to the webapp.
 To configure the ORM you need at least two files a file named "SalAnb.cfg.xml"
 A sample of the file looks like this:
 
-><?xml version = "1.0" encoding = "utf-8"?>
-><!DOCTYPE salanb-configuration SYSTEM
->        "http://johnsalguero.com/dtd/salanb-configuration-0.1.dtd">
-><salanb-configuration>
->    <session-factory>
->
->        <property name = "salanb.connection.driver_class">
->            org.postgresql.Driver
->        </property>
->
->        <property name = "salanb.connection.url">
->            jdbc:postgresql://john2201javareact.c52ukl0dxifi.us-east-1.rds.amazonaws.com:5432/postgres
->        </property>
->
->        <property name = "salanb.connection.username">
->            postgres
->        </property>
->
->        <property name = "salanb.connection.password">
->            changeThePassword
->        </property>
->
->        <!-- List of XML mapping files -->
->        <mapping resource = "Movie.salanb.test.xml"/>
->    </session-factory>
-></salanb-configuration>
+>	<?xml version = "1.0" encoding = "utf-8"?>
+>	<!DOCTYPE salanb-configuration SYSTEM
+>	        "http://johnsalguero.com/dtd/salanb-configuration-0.1.dtd">
+>	<salanb-configuration>
+>	    <session-factory>
+>	
+>	        <property name = "salanb.connection.driver_class">
+>	            org.postgresql.Driver
+>	        </property>
+>	
+>	        <property name = "salanb.connection.url">
+>	            jdbc:postgresql://john2201javareact.c52ukl0dxifi.us-east-1.rds.amazonaws.com:5432/postgres
+>	        </property>
+>	
+>	        <property name = "salanb.connection.username">
+>	            postgres
+>	        </property>
+>	
+>	        <property name = "salanb.connection.password">
+>	            changeThePassword
+>	        </property>
+>	
+>	        <!-- List of XML mapping files -->
+>	        <mapping resource = "Movie.salanb.test.xml"/>
+>	    </session-factory>
+>	</salanb-configuration>
 
 If you are familiar with the way Hibernate uses XML files, you will find 
 many simularities. You can actually list many session factory objects in this
@@ -54,26 +54,26 @@ models in 1 file, or use 1 file per model, or any combination of models and
 mapping files as long as there is no double mapping or inconsistencies.
 A mapping configuration looks like this.
 
-><?xml version = "1.0" encoding = "utf-8"?>
-><!DOCTYPE salanb-mapping SYSTEM
->        "http://johnsalguero.com/dtd/salanb-mapping-0.1.dtd">
-><salanb-mapping>
->    <class name = "testmodels.Movie" table = "movies">
->
->        <meta attribute = "class-description">
->            This class contains the movie detail.
->        </meta>
->
->        <id name = "id" type = "integer" column = "m_id">
->            <generator class="NATURAL"/>
->        </id>
->
->        <property name = "title" column = "title" type = "string"/>
->        <property name = "price" column = "price" type = "big_decimal"/>
->        <property name = "available" column = "available" type = "boolean"/>
->        <property name = "returnDate" column = "return_date" type = "long"/>
->        <property name = "directorId" column = "director_id" type = "integer"/>
->        <property name = "genre_id" column = "genre_id" type = "integer"/>
->
->    </class>
-></salanb-mapping>
+>	<?xml version = "1.0" encoding = "utf-8"?>
+>	<!DOCTYPE salanb-mapping SYSTEM
+>	        "http://johnsalguero.com/dtd/salanb-mapping-0.1.dtd">
+>	<salanb-mapping>
+>	    <class name = "testmodels.Movie" table = "movies">
+>	
+>	        <meta attribute = "class-description">
+>	            This class contains the movie detail.
+>	        </meta>
+>	
+>	        <id name = "id" type = "integer" column = "m_id">
+>	            <generator class="NATURAL"/>
+>	        </id>
+>	
+>	        <property name = "title" column = "title" type = "string"/>
+>	        <property name = "price" column = "price" type = "big_decimal"/>
+>	        <property name = "available" column = "available" type = "boolean"/>
+>	        <property name = "returnDate" column = "return_date" type = "long"/>
+>	        <property name = "directorId" column = "director_id" type = "integer"/>
+>	        <property name = "genre_id" column = "genre_id" type = "integer"/>
+>	
+>	    </class>
+>	</salanb-mapping>
