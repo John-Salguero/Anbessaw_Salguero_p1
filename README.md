@@ -15,6 +15,7 @@ you by using GET POST PUT and DELETE HTTP Requests to the webapp.
 To configure the ORM you need at least two files a file named "SalAnb.cfg.xml"
 A sample of the file looks like this:
 
+>
 >	<?xml version = "1.0" encoding = "utf-8"?>
 >	<!DOCTYPE salanb-configuration SYSTEM
 >	        "http://johnsalguero.com/dtd/salanb-configuration-0.1.dtd">
@@ -41,6 +42,7 @@ A sample of the file looks like this:
 >	        <mapping resource = "Movie.salanb.test.xml"/>
 >	    </session-factory>
 >	</salanb-configuration>
+>
 
 If you are familiar with the way Hibernate uses XML files, you will find 
 many simularities. You can actually list many session factory objects in this
@@ -54,6 +56,7 @@ models in 1 file, or use 1 file per model, or any combination of models and
 mapping files as long as there is no double mapping or inconsistencies.
 A mapping configuration looks like this.
 
+>
 >	<?xml version = "1.0" encoding = "utf-8"?>
 >	<!DOCTYPE salanb-mapping SYSTEM
 >	        "http://johnsalguero.com/dtd/salanb-mapping-0.1.dtd">
@@ -77,3 +80,4 @@ A mapping configuration looks like this.
 >	
 >	    </class>
 >	</salanb-mapping>
+>
